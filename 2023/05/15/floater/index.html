@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【深度学习】用于transformer的floater位置编码 | Charley&#39;s Hut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="DeepLearning" />
+  
+  
+  
+  
+  <meta name="description" content="© Charleyxiao。未经授权，严禁转载。 由于博客排版有误，欢迎移至知乎阅读：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;629476200 0x00 来源论文Learning to Encode Position for Transformer with Continuous Dynamical Model 0x01 引言位置编码（Positional Encoding）是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【深度学习】用于Transformer的FLOATER位置编码">
+<meta property="og:url" content="http://charleyhut.github.io/2023/05/15/floater/index.html">
+<meta property="og:site_name" content="Charley&#39;s Hut">
+<meta property="og:description" content="© Charleyxiao。未经授权，严禁转载。 由于博客排版有误，欢迎移至知乎阅读：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;629476200 0x00 来源论文Learning to Encode Position for Transformer with Continuous Dynamical Model 0x01 引言位置编码（Positional Encoding）是">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://charleyhut.github.io/image-20230514161146018.png">
+<meta property="og:image" content="http://charleyhut.github.io/image-20230514161328373.png">
+<meta property="og:image" content="http://charleyhut.github.io/image-20230515130420884.png">
+<meta property="og:image" content="http://charleyhut.github.io/image-20230515130120750.png">
+<meta property="og:image" content="http://charleyhut.github.io/image-20230515130147568.png">
+<meta property="og:image" content="http://charleyhut.github.io/image-20230515130251623.png">
+<meta property="og:image" content="http://charleyhut.github.io/image-20230515131237940.png">
+<meta property="og:image" content="http://charleyhut.github.io/image-20230515132135020.png">
+<meta property="article:published_time" content="2023-05-15T14:12:00.224Z">
+<meta property="article:modified_time" content="2023-05-15T14:43:26.626Z">
+<meta property="article:author" content="Charley Xiao">
+<meta property="article:tag" content="DeepLearning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://charleyhut.github.io/image-20230514161146018.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Charley&#39;s Hut" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-floater" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【深度学习】用于Transformer的FLOATER位置编码
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/05/15/floater/" class="article-date">
+	  <time datetime="2023-05-15T14:12:00.224Z" itemprop="datePublished">2023-05-15</time>
+	</a>
+
+      
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>© Charleyxiao。未经授权，严禁转载。</p>
+<p>由于博客排版有误，欢迎移至知乎阅读：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/629476200">https://zhuanlan.zhihu.com/p/629476200</a></p>
+<h2 id="0x00-来源论文"><a href="#0x00-来源论文" class="headerlink" title="0x00 来源论文"></a>0x00 来源论文</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2003.09229">Learning to Encode Position for Transformer with Continuous Dynamical Model</a></p>
+<h2 id="0x01-引言"><a href="#0x01-引言" class="headerlink" title="0x01 引言"></a>0x01 引言</h2><p>位置编码（Positional Encoding）是 Transformer 模型的预处理的一个重要部分。之所以引入位置编码，是为了解决自注意力机制（Self-attention）中没有办法区分输入向量之间距离的问题。具体来说，如果我们要处理 <code>I love you.</code> 这么一个句子，在没有位置编码的情况下，Transformer 架构会认为 <code>I love</code> 的距离和 <code>I you</code> 是一样的。总而言之，在自注意力机制里面，根本就没有位置的信息，但是实际上位置的信息有的时候是很重要的，因此位置编码机制应运而生。位置编码机制千奇百怪，而在上述论文中，它提出了一种叫作 FLOATER 的位置编码，这将是我们在这篇博客中讲解的重点。</p>
+<h2 id="0x02-位置编码"><a href="#0x02-位置编码" class="headerlink" title="0x02 位置编码"></a>0x02 位置编码</h2><p>让我们先来回顾一下位置编码具体是怎么操作的。假设在 Transformer 架构中，有一个输入向量 $a^i$，那么由它分别左乘三个矩阵 $W^q,W^k,W^v$ 得到 $q^i,k^i,v^i$，它们分别表示 $a^i$ 的 <code>query</code>、<code>key</code> 以及 <code>value</code>。那么 $a^i$ 对应的注意力值就是：<br>$$<br>\alpha^i=[k^1,k^2,k^3,\dots,k^L]^\top q^i<br>$$<br>一般来说我们会对 $\alpha^i$ 作 $\rm softmax$ 操作，即 $\alpha{^\prime}^i=\mathop{\rm softmax}(\alpha^i)$。这样我们就得到了自注意力。</p>
+<p>正如前文所说，我们需要引入一个位置编码。而这个位置编码是和输入同大小的一串向量，比如对于 $a^i$ 就有一个对应的位置编码 $e^i$，这时我们就把 $a^i+e^i$ 作为输入向量。即：<br>$$<br>q^i=W^q(a^i+e^i)<br>$$<br>$$<br>k^i=W^k(a^i+e^i)<br>$$<br>$$<br>v^i=W^v(a^i+e^i)<br>$$<br>这看起来很简单，但实际上这个 $e^i$ 是需要由我们手动来设定一个生成规则的（虽然现在已经有人提出把它也作为可学习参数进入网络，但是至少最开始的时候是手工的）。其中比较著名的有 <code>Sinusoidal</code>、<code>Position embedding </code> 以及 <code>RNN</code> 生成，当然不要忘了这篇文章中提出的 FLOATER。它们分别长这样：</p>
+<p><img src="/image-20230514161146018.png" alt="image-20230514161146018"></p>
+<p>其中，越深色代表越接近-1，越浅色代表越接近1。</p>
+<p>这篇论文同时也对比了一下这几种方法：</p>
+<p><img src="/image-20230514161328373.png" alt="image-20230514161328373"></p>
+<p>可以看到，它所提出的 FLOATER 还是非常优秀的。</p>
+<h2 id="0x03-FLOATER"><a href="#0x03-FLOATER" class="headerlink" title="0x03 FLOATER"></a>0x03 FLOATER</h2><p>接下来进入正题，介绍一下FLOATER。</p>
+<p>FLOATER 全称 <strong>FLOw-bAsed TransformER</strong>（事实上在这篇论文里面你可以看到 FLOWER 和 FLOATER 两种表述，它们是一种东西，只是取了不同的首字母而已，不是很清楚为什么论文作者们没有统一一个名称），它的主要思想是将位置编码建模为<strong>连续动态系统（Continuous Dynamical System）</strong>，因此只需要学习系统动态而不是独立地学习每个位置的嵌入向量 $e^i$。</p>
+<p>所谓连续动态系统，它描述了在连续时间内，系统的状态如何随时间变化而变化。这种系统通常用微分方程来描述，其中系统的状态在任意时刻都由状态变量和它们的导数（即状态变量随时间的变化率）来表示。</p>
+<p>为了使网络能够通过反向传播进行训练，这篇论文采用了神经常微分方程（Neural ODE），即自由形式流模型（Free-form Flow Model）。</p>
+<h3 id="0x03-1-动态系统位置编码"><a href="#0x03-1-动态系统位置编码" class="headerlink" title="0x03-1 动态系统位置编码"></a>0x03-1 动态系统位置编码</h3><p>这里我们统一将符号改为和论文中的一致。位置编码是一个向量序列 ${p^i\in \mathbb{R}^d:i=1,\dots,L}$，输入向量 ${x^i\in\mathbb{R}^d:i=1,\dots,L}$。</p>
+<p>既然采用了动态系统的架构，那么我们认为有一个潜在力（latent force），记为 $h^i$，是它把将 $p^i$ 转移到了 $p^{i+1}$。</p>
+<p>那么假设函数 $p(t)$ 是 ${p^i}$ 的连续光滑版本，我们的动态系统应该满足：<br>$$<br>p(t)=p(s)+\int_s^th(\tau,p(\tau);\theta_h){\rm d}\tau,0\le s\le t&lt;\infty<br>$$<br>其中，$h(\tau,p(\tau);\theta_h)$ 代表参数 $\theta_h$ 和前一时刻状态 $(\tau,p(\tau))$ 构成的神经网络。</p>
+<p>既然 ${p^i}$ 是离散的而 $p(\cdot)$ 是连续的，我们可以取 ${t^i=i\cdot\Delta t}:p^i=p(t^i)$，其中这个 $\Delta$ 是一个超参数，论文里设置的是 $\Delta=0.1$。</p>
+<p>不难看出，上面的由 $p(s)$ 到 $p(t)$ 的转移方程实际上可以表达成一个常微分方程问题：<br>$$<br>\dfrac{\mathrm{d}p(t)}{\mathrm{d}t}=h(t,p(t);\theta_h)<br>$$<br>为了训练网络，在反向传播过程，我们需要求解损失函数 $L(p^0,\dots,p^L)$ 关于 $\theta_h$ 的梯度。我们有：<br>$$<br>\dfrac{\mathrm{d}L}{\mathrm{d}\theta_h}=-\int_t^s a(\tau)^\top\dfrac{\partial h(\tau,p_\tau;\theta_h)}{\partial\theta_h}\mathrm{d}\tau<br>$$<br>其中 $a(\tau)$ 是常微分方程的伴随状态，可以由另一个常微分方程计算：<br>$$<br>\dfrac{\mathrm{d}a(\tau)}{\mathrm{d}\tau}=-a(\tau)^\top\dfrac{\partial h(\tau,p_\tau;\theta_h)}{\partial p_\tau}<br>$$<br>在后面我们会讲到如何设置常微分方程的自动求解器。</p>
+<h3 id="0x03-2-块间参数共享"><a href="#0x03-2-块间参数共享" class="headerlink" title="0x03-2 块间参数共享"></a>0x03-2 块间参数共享</h3><p>我们知道，在 seq2seq Transformer 的架构中一共有6个块，BERT 有12或24个块，我们可以尝试在每一个块都进行位置编码来优化网络的性能。但是同时拥有 $N$ 个不同的动态系统 $h^{n}(\cdot;\theta_h^n)$ 会引入很多参数，这样的话训练开销会很大。因此，我们令：<br>$$<br>\theta_h^1=\theta_h^2=\dots=\theta_h^N<br>$$</p>
+<h3 id="0x03-3-对原始-Transformer-的兼容性"><a href="#0x03-3-对原始-Transformer-的兼容性" class="headerlink" title="0x03-3 对原始 Transformer 的兼容性"></a>0x03-3 对原始 Transformer 的兼容性</h3><p>实际上，FLOATER 和原始的 Transformer 模型是兼容的。我们考虑正弦式编码（sinusoidal encoding）：<br>$$<br>\tilde{q}^i=W^q(x^i+\tilde{p}^i)+b^q<br>$$<br>这个公式的意思是，一个输入向量的 <code>query</code> 值是 $\tilde{q}^i$ 是由模型参数 $W^q,b^q$ 以及它本身 $x^i$ 和位置编码 $\tilde{p}^i$ 计算而来的。$\tilde{k}^i,\tilde{v}^i$ 以此类推，不赘述。</p>
+<p>假如引入的是 FLOATER 模型，那么就有：<br>$$<br>q^i=W^q(x^i+p^i)+b^q<br>$$<br>$$<br>=W^q(x^i+\tilde{p}^i)+b^q+W^q(p^i-\tilde{p}^i)<br>$$<br>$$<br>=\tilde{q}^i+b^{q,i}<br>$$<br>可以看到，从正弦式编码到 FLOATER 本质上就是把原来的偏置 $b^q$ 改成了一个考虑位置 $i$ 的新偏置 $b^{q,i}$。因此，我们就有了这样的动态系统：<br>$$<br>b^q(t)=b^q(0)+\int_0^th(\tau,b^q(\tau);\theta_h)\mathrm{d}\tau<br>$$<br>在此基础上，我们令 $b^{q,i}=b^q(i\cdot\Delta t)$。而当 $h(\cdot)=0,b^q(0)=0$ 时，有 $q^i=\tilde{q}^i$，即 FLOATER 退化为了正弦式编码。</p>
+<p>因此，利用这种兼容性，我们可以直接用预训练的 Transformer 模型初始化 FLOATER 模型，然后在下游任务进行微调。而对于类似 BERT 或 Transformer-XL 之类的模型，我们已经为下游任务提供了 checkpoint。为了对比 FLOATER 模型和其他模型的表现，论文中逐层复制了注意力和 FFN 层的权重，并随机初始化了 $h(\tau,p(\tau);\theta_h)$。</p>
+<h2 id="0x04-实现及实验结果"><a href="#0x04-实现及实验结果" class="headerlink" title="0x04 实现及实验结果"></a>0x04 实现及实验结果</h2><p>论文把 FLOATER 放在了一些 NLP 任务中进行测试并与其他模型进行了比较。</p>
+<h3 id="0x04-1-设置常微分方程自动求解器"><a href="#0x04-1-设置常微分方程自动求解器" class="headerlink" title="0x04-1 设置常微分方程自动求解器"></a>0x04-1 设置常微分方程自动求解器</h3><p>论文用的常微分方程求解器是经过修改的 <code>torchdiffeq</code> 库，可以在<a target="_blank" rel="noopener" href="https://github.com/rtqichen/torchdiffeq">此链接</a>下载。</p>
+<p>神经机器翻译任务上，采用步长 $\dfrac{\Delta}{5.0}$（前面设置了 $\Delta=0.1$）的 Runge-Kutta 法（即通过计算在每个时间步长之间各个中间点的解斜率的加权平均数来近似计算ODE的解），在 GLUE 和 RACE 上测试。</p>
+<h3 id="0x04-2-神经机器翻译任务"><a href="#0x04-2-神经机器翻译任务" class="headerlink" title="0x04-2 神经机器翻译任务"></a>0x04-2 神经机器翻译任务</h3><p>论文运行了由 fairseq 提供的预处理脚本成功复现了 Transformer 论文 Attention is all you need 中的所有结果，然后按照下面的步骤获得了这篇论文的结果：</p>
+<ol>
+<li>对原始 Transformer 模型进行30个 epoch 的训练；</li>
+<li>随机初始化 FLOATER 模型；</li>
+<li>从验证集里表现最佳的 checkpoint 初始化 FLOATER 模型，同时给动态模型里的权重 $\theta_h$ 赋一个比较小的值；</li>
+<li>将峰值学习率减半；</li>
+<li>使用预处理好的 FLOATER checkpoint，在相同的数据集上进行10个 epoch 的英德翻译训练和1个epoch 的英法翻译训练；</li>
+<li>对最后5个 checkpoint 取平均，并在测试集上计算 BLEU 分数。</li>
+</ol>
+<p>以下是实验结果：</p>
+<p><img src="/image-20230515130420884.png" alt="image-20230515130420884"></p>
+<h3 id="0x04-3-语言理解任务"><a href="#0x04-3-语言理解任务" class="headerlink" title="0x04-3 语言理解任务"></a>0x04-3 语言理解任务</h3><p>对于 GLUE/SQuAD/RACE 基准测试，论文中的实验都是基于 RoBERTa 进行的，包括 <code>base</code> 和 <code>large</code> 两种配置。由于资源限制，使用的是预训练的 RoBERTa 来初始化 FLOATER 模型，类似于神经机器翻译任务。但是由于 GLUE/SQuAD/RACE 数据集过小，无法从头开始训练，因此动态系统动态函数 $h(\tau,p(\tau);\theta_h)$ 的权重 $\theta_h$ 是在 WikiText103 数据上使用 Masked Language Modeling Loss 进行预训练的，而且只训练 $\theta_h$。所谓 Masked Language Modeling Loss，指的是输入的文本序列中的一些词语被随机遮蔽，模型需要预测这些遮蔽词语的正确词汇。这可以让模型学会从上下文中推断出遮蔽掉的词语，从而提高模型对于语言的理解和生成能力。论文发现单独训练 $\theta_h$ 时，只需要几个小时（配置是2个 Titan V100）和一个训练周期就可以达到收敛。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/facebookresearch/fairseq/blob/main/examples/roberta/README.glue.md"><strong>GLUE 基准</strong></a>：8个数据集和不同的超参数设定。论文使用的是和 RoBERTa 中一样的超参数。</p>
+<p><strong>SQuAD 基准</strong>（<a target="_blank" rel="noopener" href="https://github.com/ecchochan/roberta-squad">来源1</a> 和 <a target="_blank" rel="noopener" href="https://github.com/huggingface/transformers">来源2</a>）：论文自己写了微调代码，同样使用的是 RoBERTa 里面的超参数。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/facebookresearch/fairseq/blob/main/examples/roberta/README.race.md"><strong>RACE 基准</strong></a>：有最长的上下文和序列长度。使用 RoBERTa 里的超参数。冻结权重 $\theta_h$，并且只微调 RoBERTa 的权重。</p>
+<p>以下是实验结果：</p>
+<p><img src="/image-20230515130120750.png" alt="image-20230515130120750"><img src="/image-20230515130147568.png" alt="image-20230515130147568"><img src="/image-20230515130251623.png" alt="image-20230515130251623"></p>
+<h2 id="0x05-讨论与分析"><a href="#0x05-讨论与分析" class="headerlink" title="0x05 讨论与分析"></a>0x05 讨论与分析</h2><h3 id="0x05-1-泛化能力"><a href="#0x05-1-泛化能力" class="headerlink" title="0x05-1 泛化能力"></a>0x05-1 泛化能力</h3><p>论文作者们注意到在 WMT14 英德数据集上有98.6%的训练句少于80个 tokens，所以他们做了一个新的数据集，<em>En-De short to long</em>，简称 S2L，即把小于80个 tokens 的句子作为训练集，其余的作为测试集，而又进一步将测试集根据 tokens 数量分为4个部分：$[80,100),[100,120),[120,140),[140,+\infty)$，计算出来的 BLEU 分数如下：</p>
+<p><img src="/image-20230515131237940.png" alt="image-20230515131237940"></p>
+<p>可以看出，FLOATER 的泛化能力非常优秀，即便是训练集只提供短句子，也能够适用于长句子。</p>
+<h3 id="0x05-2-与-RNN-的比较"><a href="#0x05-2-与-RNN-的比较" class="headerlink" title="0x05-2 与 RNN 的比较"></a>0x05-2 与 RNN 的比较</h3><p>众所周知，RNN 也可以用于序列模型，而且和 FLOATER 一样，第 $i$ 步也是依赖于第 $(i-1)$ 步的。论文就将 RNN 与 FLOATER 的性能进行了对比。<br>$$<br>p^{i+1}=\mathrm{RNN}(z^i,p^i)<br>$$<br>其中 $p^i$ 是之前提到的位置编码，$z^i$ 是 $i$ 处 RNN 的输入。实验结果如下：</p>
+<p><img src="/image-20230515132135020.png" alt="image-20230515132135020"></p>
+<h3 id="0x05-3-训练与测试效率"><a href="#0x05-3-训练与测试效率" class="headerlink" title="0x05-3 训练与测试效率"></a>0x05-3 训练与测试效率</h3><p>由于利用流模型求解神经常微分方程一次需要大概100次前向和反向传播，再加上常微分方程求解器无法利用 GPU 并行运算的优势，FLOATER 模型的开销是非常大的。论文提出了以下几种方法来改进：</p>
+<ol>
+<li>利用已经训练好的模型来初始化；</li>
+<li>用较小的数值初始化 FLOATER；</li>
+<li>因为 $h(\cdot)$ 训练起来比较容易和稳定，可以将它与网络的其他部分分离出来；</li>
+<li>对于 RoBERTa 模型，直接下载预训练的模型，插入 FLOATER 编码层，然后重新训练编码层；而在 GLUE 上微调时，直接冻结编码层使它不变。</li>
+</ol>
+<p>利用上述方法，FLOATER 只花了比 Transformer 多20-30%的时间来训练。</p>
+<h2 id="0x06-总结与展望"><a href="#0x06-总结与展望" class="headerlink" title="0x06 总结与展望"></a>0x06 总结与展望</h2><p>这篇论文将 Neural ODE 和 Transformer 结合起来提出了 FLOATER 模型，并取得了较好的效果。但是自然语言的高度离散化让连续性假设可能不再实用，而且 Neural ODE 仍处于发展阶段，没有得到广泛的应用。而且 TENER 指出本文（以及其他传统模型）将位置编码和输入向量相加的方式会导致位置编码在后续变换中消失。</p>
+<h2 id="0x07-参考文献"><a href="#0x07-参考文献" class="headerlink" title="0x07 参考文献"></a>0x07 参考文献</h2><p><strong>[1]</strong> Learning to Encode Position for Transformer with Continuous Dynamical Model: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2003.09229">https://arxiv.org/abs/2003.09229</a></p>
+<p><strong>[2]</strong> TENER: Adapting Transformer Encoder for Named Entity Recognition: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1911.04474">https://arxiv.org/abs/1911.04474</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Charley Xiao</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/2023/05/15/floater/" target="_blank" title="【深度学习】用于Transformer的FLOATER位置编码">http://charleyhut.github.io/2023/05/15/floater/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/" rel="tag">DeepLearning</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/01/27/verb_inflection/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">希伯来语动词变位小结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E6%9D%A5%E6%BA%90%E8%AE%BA%E6%96%87"><span class="nav-number">1.</span> <span class="nav-text">0x00 来源论文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%BC%95%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">0x01 引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">0x02 位置编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-FLOATER"><span class="nav-number">4.</span> <span class="nav-text">0x03 FLOATER</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0x03-1-%E5%8A%A8%E6%80%81%E7%B3%BB%E7%BB%9F%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81"><span class="nav-number">4.1.</span> <span class="nav-text">0x03-1 动态系统位置编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0x03-2-%E5%9D%97%E9%97%B4%E5%8F%82%E6%95%B0%E5%85%B1%E4%BA%AB"><span class="nav-number">4.2.</span> <span class="nav-text">0x03-2 块间参数共享</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0x03-3-%E5%AF%B9%E5%8E%9F%E5%A7%8B-Transformer-%E7%9A%84%E5%85%BC%E5%AE%B9%E6%80%A7"><span class="nav-number">4.3.</span> <span class="nav-text">0x03-3 对原始 Transformer 的兼容性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E5%AE%9E%E7%8E%B0%E5%8F%8A%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">5.</span> <span class="nav-text">0x04 实现及实验结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0x04-1-%E8%AE%BE%E7%BD%AE%E5%B8%B8%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E8%87%AA%E5%8A%A8%E6%B1%82%E8%A7%A3%E5%99%A8"><span class="nav-number">5.1.</span> <span class="nav-text">0x04-1 设置常微分方程自动求解器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0x04-2-%E7%A5%9E%E7%BB%8F%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91%E4%BB%BB%E5%8A%A1"><span class="nav-number">5.2.</span> <span class="nav-text">0x04-2 神经机器翻译任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0x04-3-%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3%E4%BB%BB%E5%8A%A1"><span class="nav-number">5.3.</span> <span class="nav-text">0x04-3 语言理解任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E8%AE%A8%E8%AE%BA%E4%B8%8E%E5%88%86%E6%9E%90"><span class="nav-number">6.</span> <span class="nav-text">0x05 讨论与分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0x05-1-%E6%B3%9B%E5%8C%96%E8%83%BD%E5%8A%9B"><span class="nav-number">6.1.</span> <span class="nav-text">0x05-1 泛化能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0x05-2-%E4%B8%8E-RNN-%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">6.2.</span> <span class="nav-text">0x05-2 与 RNN 的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0x05-3-%E8%AE%AD%E7%BB%83%E4%B8%8E%E6%B5%8B%E8%AF%95%E6%95%88%E7%8E%87"><span class="nav-number">6.3.</span> <span class="nav-text">0x05-3 训练与测试效率</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E6%80%BB%E7%BB%93%E4%B8%8E%E5%B1%95%E6%9C%9B"><span class="nav-number">7.</span> <span class="nav-text">0x06 总结与展望</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">8.</span> <span class="nav-text">0x07 参考文献</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2023 - 2023 Charley&#39;s Hut All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Charley&#39;s Hut
+          </div>
+          <div class="panel-body">
+            Copyright © 2023 Charley Xiao All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+</body>
+</html>
