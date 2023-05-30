@@ -23,6 +23,7 @@
   <link rel="icon" type="image/png" href="images/icons.png">
   
   <script src="jquery.min.js"></script>
+  <script src="showgrades.js"></script>
   <script>
   $(document).ready(function(){
     // Add smooth scrolling to all links
@@ -136,12 +137,7 @@
     <h3>2023 Spring</h3>
     <p><li> No data yet.</p>
     <h3>2022 Fall</h3>
-    <p><li> Privileged information, please input password to gain access.</p>
-    <center><form name="login" method="post" action="pass.php">
-    Password:<input name="password" type="password"><br/>
-    <input type="submit" name="submit" value="Submit"> &nbsp;
-    <input type="reset" name="reset" value="Reset">
-    </form></center>
+    <p><li><div id="f22"> Privileged information, please click <a style="color: blue;" onclick="validatef22()">here</a> and input password to gain access.</div></p>
     <h3>Others</h3>
     <h4>IELTS</h4>
     <p><li> 7/2022, L 9.0, R 9.0, W 7.0, S 6.0, Overall 8.0</p>
