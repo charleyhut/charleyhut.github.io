@@ -6,13 +6,13 @@ function validatef22(){
 		return;
 	}
 	if(f22validated){
-		document.getElementById('f22').innerHTML='GPA: 2.96/4.00 Rank: 1087/1371. Click <a style="color: blue;" onclick="cancelf22()">here</a> to hide the content.';
+		document.getElementById('f22').innerHTML='GPA: 2.96/4.00 <br/><li> Rank: 1087/1371 <br/> Click <a style="color: blue;" onclick="cancelf22()">here</a> to hide the content.';
 		return;
 	}
 	var pswd=window.prompt('Enter password to check grades for 2022 Fall');
 	if(pswd=='adminf22validated'){
 		f22validated=true;
-		document.getElementById('f22').innerHTML='GPA: 2.96/4.00 Rank: 1087/1371. Click <a style="color: blue;" onclick="cancelf22()">here</a> to hide the content.';
+		document.getElementById('f22').innerHTML='GPA: 2.96/4.00 <br/><li> Rank: 1087/1371 <br/> Click <a style="color: blue;" onclick="cancelf22()">here</a> to hide the content.';
 	}
 	else{
 		window.alert('Wrong password!');
