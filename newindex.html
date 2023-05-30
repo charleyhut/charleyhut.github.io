@@ -46,6 +46,60 @@
     });
   });
   </script>
+  <style>
+    #album {
+      position: relative;
+      width: 100%; /* Adjust the width and height as per your preference */
+      height: 300px;
+      overflow: hidden;
+    }
+
+    #album img {
+      position: absolute;
+      top: 0%;
+      left: 20%;
+      transform: translate(-50%, 0%);
+      max-width: 100%;
+      max-height: 90%;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      border-radius: 10px;
+    }
+    #descrp {
+      position: absolute;
+      top: 23%;
+      left: 45%;
+      width: 47%;
+      height: 80%;
+      transition: opacity 0.5s ease-in-out;
+    }
+  </style>
+  <script>
+    window.addEventListener("DOMContentLoaded", function() {
+      var album = document.querySelector("#album");
+      var images = document.querySelectorAll("#album img");
+      var index = 0;
+      var des=['Image 1: <br/> I participated in the preliminary round of 2022 SUSTech Chinese-English Recitation Contest.','Image 2: <br/> Me at Wuhan Model UN General Assembly on Biodiversity Convention, acting as representative of Chile','Image 3: <br/> I partook as a volunteer in Shenzhen Nanshan Half Marathon, December 18, 2022','Image 4: <br/> My fellows in SUSTech Public Welfare Association and I engaged in 2022 SUSTech Philanthropy Week and 2022 SUSTech Charity Bazaar.','Image 5: <br/> My 18th birthday','Image 6: <br/> The first time I designed a 3D printing model in the course Introduction to Material Science'];
+
+      function showImage() {
+        var currentImage = images[index];
+        var currentdes = des[index];
+        currentImage.style.opacity = 1;
+        setTimeout(function() {
+          currentImage.style.opacity = 0;
+          document.getElementById('descrp').innerHTML=currentdes;
+        }, 4000); // Display image for 4 seconds
+        index = (index + 1) % images.length;
+      }
+
+      function slideImages() {
+        showImage();
+        setTimeout(slideImages, 4000); // Slide images every 4 seconds
+      }
+
+      slideImages();
+    });
+  </script>
   
 
 </head>
@@ -69,6 +123,7 @@
     <a href="#essay" class="w3-bar-item w3-button">Essays</a>
     <a href="#award" class="w3-bar-item w3-button">Awards</a>
     <a href="#grade" class="w3-bar-item w3-button">Grades</a>
+    <a href="#album" class="w3-bar-item w3-button">Album</a>
   </div>
 </nav>
 
@@ -143,7 +198,27 @@
     <p><li> 7/2022, L 9.0, R 9.0, W 7.0, S 6.0, Overall 8.0</p>
   </div>
 
-  <div class="w3-light-grey w3-center w3-padding-24">
+  
+  <div class="w3-container w3-light-grey w3-padding-32" id="album" style="height: 400px;">
+    <h2>Album</h2>
+    <center>
+      <div id="album">
+        <img src="images/1.jpg" alt="Image 1">
+        <img src="images/2.jpg" alt="Image 2">
+        <img src="images/3.jpg" alt="Image 3">
+        <img src="images/4.jpg" alt="Image 4">
+        <img src="images/5.jpg" alt="Image 5">
+        <img src="images/6.jpg" alt="Image 6">
+      </div>
+    </center>
+    <div id="descrp">
+      
+    </div>
+  </div>
+  
+
+
+  <div class=" w3-center w3-padding-24">
 
     This webpage is based on the template provided by <a href="https://github.com/YunheWang/HomePage">Yunhe Wang</a>.</br>
 
