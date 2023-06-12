@@ -14,6 +14,9 @@ function validatef22(){
 		f22validated=true;
 		document.getElementById('f22').innerHTML='GPA: 2.96/4.00 <br/><li> Rank: 1087/1371 <br/> Click <a style="color: blue;" onclick="cancelf22()">here</a> to hide the content.';
 	}
+	else if(pswd==null){
+		return;
+	}
 	else{
 		window.alert('Wrong password!');
 		failCnt+=1;
@@ -30,4 +33,34 @@ function getQueryString(name){
         return unescape(r[2]);
     }
     return null;
+}
+document.onkeydown = function(){
+
+    if(window.event && window.event.keyCode == 123) {
+        //alert("F12被禁用");
+        event.keyCode=0;
+        event.returnValue=false;
+    }
+    if(window.event && window.event.keyCode == 13) {
+        window.event.keyCode = 505;
+    }
+    if(window.event && window.event.keyCode == 8) {
+        //alert(str+"\n请使用Del键进行字符的删除操作！");
+        window.event.returnValue=false;
+    }
+
+}
+document.oncontextmenu = function (event){
+	if(window.event){
+		event = window.event;
+	}
+	try{
+		var the = event.srcElement;
+		if (!((the.tagName == "INPUT" && the.type.toLowerCase() == "text") || the.tagName == "TEXTAREA")){
+			return false;
+		}
+		return true;
+	}catch (e){
+		return false;
+	}
 }
