@@ -23,3 +23,11 @@ function validatef22(){
 function cancelf22(){
 	document.getElementById('f22').innerHTML=' Privileged information, please click <a style="color: blue;" onclick="validatef22()">here</a> and input password to gain access.';
 }
+function getQueryString(name){
+	var reg=new RegExp('(^|&)'+name+'=([^&]*)(&|$)','i');
+	var r=window.location.search.substr(1).match(reg);
+    if (r!=null) {
+        return unescape(r[2]);
+    }
+    return null;
+}

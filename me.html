@@ -76,6 +76,7 @@
   </style>
   <script>
     window.addEventListener("DOMContentLoaded", function() {
+      albumControl();
       var album = document.querySelector("#album");
       var images = document.querySelectorAll("#album img");
       var index = 0;
@@ -123,7 +124,7 @@
     <a href="#essay" class="w3-bar-item w3-button">Essays</a>
     <a href="#award" class="w3-bar-item w3-button">Awards</a>
     <a href="#grade" class="w3-bar-item w3-button">Grades</a>
-    <a href="#album" class="w3-bar-item w3-button">Album</a>
+    <a href="#album" id="startAlbum" class="w3-bar-item w3-button">Album</a>
   </div>
 </nav>
 
@@ -148,7 +149,7 @@
       <img style="width: 35%;max-width: 320px" alt="profile photo" src="images/copynew.png">
       <h1>Qiwen Xiao</h1>
         <p class="w3-justify" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;max-width:600px">
-          I am presently an undergraduate student (also freshman) at Southern University of Science and Technology. I anticipate to enter the Department of Computer Science and Engineering in the second year. My ardent enthusiasm is particularly directed towards the captivating realm of deep learning, with a specific focus on recommendation system and AI-generated content. I have engaged in the pursuit of knowledge by learning the practical implementation of diverse neural network models, ranging from CNN, RNN, to Transformer, adeptly utilizing the PyTorch framework and following the tutorials offered by <a href="http://d2l.ai/">Dive into Deep Learning</a>. I am also interested in language learning and can program in C/C++/Java/Python/HTML+JavaScript+CSS and speak Spanish and Russian as third and fourth languages respectively.
+          I am presently an undergraduate student (also freshman) at Southern University of Science and Technology. I anticipate to enter the Department of Computer Science and Engineering in the second year. I am enthusiastic about the captivating realm of deep learning, with a specific focus on recommendation system and AI-generated content. I have engaged in  learning the practical implementation of diverse neural network models, ranging from CNN, RNN, to Transformer, adeptly utilizing the PyTorch framework and following the tutorials offered by <a href="http://d2l.ai/">Dive into Deep Learning</a>. I am also interested in language learning and can program in C/C++/Java/Python/HTML+JavaScript+CSS and speak Spanish and Russian as third and fourth languages respectively.
         </p>
         <p class="w3-center">
           <a href="mailto:12211634@mail.sustech.edu.cn"> Email </a> &nbsp/&nbsp
@@ -213,8 +214,8 @@
   <!-- The Awards Section -->
   <div class="w3-container w3-padding-32" id="award">
     <h2>Awards</h2>
-    <p><li> 2023, <a style="color: gold;">First Prize</a>, NECCS (National English Competition for College Students, Preliminary Round).</p>
-    <p><li> 2023, <a style="color: gold;">First Prize</a>, Lianmeng Cup, 10th Guangdong Province Undergraduate College English Writing Competition (Preliminary Round).</p>
+    <p><li> 2023, <a style="color: gold;">Grand Prize</a>, NECCS (National English Competition for College Students, Final Round).</p>
+    <p><li> 2023, <a style="color: gold;">Grand Prize</a>, Lianmeng Cup, 10th Guangdong Province Undergraduate College English Writing Competition (Final Round).</p>
     <p><li> 2022, <a style="color: gold;"><b>Grand Prize</b></a>, Yanxing Cup, Guangdong Provincial College English Applied Skills Competition (Final Round).</p>
     <p><li> 2020, <a style="color: silver;">Second Prize</a>, NOIP (National Olympiad for Informatics in Provinces).</p>
     <p><li> 2020, <a style="color: silver;">Second Prize</a>, CSP-S.</p>
@@ -278,7 +279,7 @@ function myAccFunc() {
 }
 
 // Click on the "Jeans" link on page load to open the accordion for demo purposes
-document.getElementById("myBtn").click();
+//document.getElementById("myBtn").click();
 
 
 // Open and close sidebar
@@ -290,6 +291,16 @@ function w3_open() {
 function w3_close() {
   document.getElementById("mySidebar").style.display = "none";
   document.getElementById("myOverlay").style.display = "none";
+}
+
+//album control
+
+function albumControl(){
+  if(getQueryString('a')=="-1"){
+    console.log('Successfully disabled Album!');
+    document.getElementById('album').style.display='none';
+    document.getElementById('startAlbum').style.display='none';
+  }
 }
 </script>
 
