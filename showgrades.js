@@ -64,3 +64,7 @@ document.oncontextmenu = function (event){
 		return false;
 	}
 }
+
+function checkAvail(target){
+	if(document.getElementById(target)==null) window.alert('Content hidden! Please contact the administrator.')
+}
