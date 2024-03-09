@@ -1,254 +1,309 @@
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 
 <head>
 
-  <title>Qiwen Xiao's Homepage</title>
+	<title>Qiwen Xiao's Homepage</title>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="description" content="Qiwen Xiao is currently an undergraduate at Southern University of Science and Technology">
-  <meta name="keywords" content="Qiwen Xiao, 肖淇文, xiaoqiwen, Qiwen, Xiao, Deep Learning, SUSTech">
-  <meta name="author" content="Qiwen Xiao" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="description"
+		content="Qiwen Xiao is currently an undergraduate at Southern University of Science and Technology">
+	<meta name="keywords" content="Qiwen Xiao, 肖淇文, xiaoqiwen, Qiwen, Xiao, Deep Learning, SUSTech">
+	<meta name="author" content="Qiwen Xiao" />
 
-  <link rel="stylesheet" href="w3.css">
+	<link rel="stylesheet" href="w3.css">
 
-  <style>
-  .w3-sidebar a {font-family: "Roboto", sans-serif}
-  body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
-  </style>
+	<style>
+		.w3-sidebar a {
+			font-family: "Roboto", sans-serif
+		}
 
-  <link rel="icon" type="image/png" href="images/icons.png">
-  
-  <script src="jquery.min.js"></script>
-  <script src="showgrades.js"></script>
-  <script>
-  $(document).ready(function(){
-    // Add smooth scrolling to all links
-    $("a").on('click', function(event) {
-      // Make sure this.hash has a value before overriding default behavior
-      if (this.hash !== "") {
-        // Prevent default anchor click behavior
-        event.preventDefault();
-        // Store hash
-        var hash = this.hash;
-        // Using jQuery's animate() method to add smooth page scroll
-        // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-        $('html, body').animate({
-          scrollTop: $(hash).offset().top
-        }, 800, function(){
-          // Add hash (#) to URL when done scrolling (default click behavior)
-          window.location.hash = hash;
-        });
-      } // End if
-    });
-  });
-  </script>
-  <style>
-    #album {
-      position: relative;
-      width: 100%; /* Adjust the width and height as per your preference */
-      height: 300px;
-      overflow: hidden;
-    }
+		body,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		.w3-wide {
+			font-family: "Montserrat", sans-serif;
+		}
+	</style>
 
-    #album img {
-      position: absolute;
-      top: 0%;
-      left: 20%;
-      transform: translate(-50%, 0%);
-      max-width: 100%;
-      max-height: 90%;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-      border-radius: 10px;
-    }
-    #descrp {
-      position: absolute;
-      top: 23%;
-      left: 45%;
-      width: 47%;
-      height: 80%;
-      transition: opacity 0.5s ease-in-out;
-    }
-  </style>
-  <script>
-    window.addEventListener("DOMContentLoaded", function() {
-      albumControl();
-      var album = document.querySelector("#album");
-      var images = document.querySelectorAll("#album img");
-      var index = 0;
-      var des=['Image 1: <br/> I participated in the preliminary round of 2022 SUSTech Chinese-English Recitation Contest.','Image 2: <br/> Me at Wuhan Model UN General Assembly on Biodiversity Convention, acting as representative of Chile','Image 3: <br/> I partook as a volunteer in Shenzhen Nanshan Half Marathon, December 18, 2022','Image 4: <br/> My fellows in SUSTech Public Welfare Association and I engaged in 2022 SUSTech Philanthropy Week and 2022 SUSTech Charity Bazaar.','Image 5: <br/> The first time I designed a 3D printing model in the course Introduction to Material Science'];
+	<link rel="icon" type="image/png" href="images/icons.png">
 
-      function showImage() {
-        var currentImage = images[index];
-        var currentdes = des[index];
-        currentImage.style.opacity = 1;
-        setTimeout(function() {
-          currentImage.style.opacity = 0;
-          document.getElementById('descrp').innerHTML=currentdes;
-        }, 4000); // Display image for 4 seconds
-        index = (index + 1) % images.length;
-      }
+	<script src="jquery.min.js"></script>
+	<script src="showgrades.js"></script>
+	<script>
+		$(document).ready(function () {
+			// Add smooth scrolling to all links
+			$("a").on('click', function (event) {
+				// Make sure this.hash has a value before overriding default behavior
+				if (this.hash !== "") {
+					// Prevent default anchor click behavior
+					event.preventDefault();
+					// Store hash
+					var hash = this.hash;
+					// Using jQuery's animate() method to add smooth page scroll
+					// The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+					$('html, body').animate({
+						scrollTop: $(hash).offset().top
+					}, 800, function () {
+						// Add hash (#) to URL when done scrolling (default click behavior)
+						window.location.hash = hash;
+					});
+				} // End if
+			});
+		});
+	</script>
+	<style>
+		#album {
+			position: relative;
+			width: 100%;
+			/* Adjust the width and height as per your preference */
+			height: 300px;
+			overflow: hidden;
+		}
 
-      function slideImages() {
-        showImage();
-        setTimeout(slideImages, 4000); // Slide images every 4 seconds
-      }
+		#album img {
+			position: absolute;
+			top: 0%;
+			left: 20%;
+			transform: translate(-50%, 0%);
+			max-width: 100%;
+			max-height: 90%;
+			opacity: 0;
+			transition: opacity 0.5s ease-in-out;
+			border-radius: 10px;
+		}
 
-      slideImages();
-    });
+		#descrp {
+			position: absolute;
+			top: 23%;
+			left: 45%;
+			width: 47%;
+			height: 80%;
+			transition: opacity 0.5s ease-in-out;
+		}
+	</style>
+	<script>
+		window.addEventListener("DOMContentLoaded", function () {
+			albumControl();
+			var album = document.querySelector("#album");
+			var images = document.querySelectorAll("#album img");
+			var index = 0;
+			var des = ['Image 1: <br/> I participated in the preliminary round of 2022 SUSTech Chinese-English Recitation Contest.', 'Image 2: <br/> Me at Wuhan Model UN General Assembly on Biodiversity Convention, acting as representative of Chile', 'Image 3: <br/> I partook as a volunteer in Shenzhen Nanshan Half Marathon, December 18, 2022', 'Image 4: <br/> My fellows in SUSTech Public Welfare Association and I engaged in 2022 SUSTech Philanthropy Week and 2022 SUSTech Charity Bazaar.', 'Image 5: <br/> The first time I designed a 3D printing model in the course Introduction to Material Science'];
 
-    window.onfocus = function () {
-        document.title = 'Great to see you again!';
-        setTimeout(function(){
-            document.title = 'Qiwen Xiao\'s Homepage';
-        }, 1000);
-    };
-    window.onblur = function () {
-        document.title = 'Home | Qiwen Xiao';
-    };
-  </script>
-  
+			function showImage() {
+				var currentImage = images[index];
+				var currentdes = des[index];
+				currentImage.style.opacity = 1;
+				setTimeout(function () {
+					currentImage.style.opacity = 0;
+					document.getElementById('descrp').innerHTML = currentdes;
+				}, 4000); // Display image for 4 seconds
+				index = (index + 1) % images.length;
+			}
+
+			function slideImages() {
+				showImage();
+				setTimeout(slideImages, 4000); // Slide images every 4 seconds
+			}
+
+			slideImages();
+		});
+
+		window.onfocus = function () {
+			document.title = 'Great to see you again!';
+			setTimeout(function () {
+				document.title = 'Qiwen Xiao\'s Homepage';
+			}, 1000);
+		};
+		window.onblur = function () {
+			document.title = 'Home | Qiwen Xiao';
+		};
+	</script>
+
 
 </head>
 
 
-<body class="w3-content" style="max-width:1000px" onselectstart="return false" oncopy="return false" oncut="return false">
+<body class="w3-content" style="max-width:1000px" onselectstart="return false" oncopy="return false"
+	oncut="return false">
 
-<!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-bar-block w3-black w3-collapse w3-top w3-right" style="z-index:3;width:150px" id="mySidebar">
-  <div class="w3-container w3-display-container w3-padding-16">
-    <h3><b>QIWEN</b></h3>
-    <h6><b>Charley</b></h6>
-  </div>
-  <div class="w3-padding-64 w3-text-light-grey w3-large" style="font-weight:bold">
-    <a href="#home" class="w3-bar-item w3-button" onclick="checkAvail('home')">Home</a>
-    <a href="#news" class="w3-bar-item w3-button" onclick="checkAvail('news')">News</a>
-    <a href="#projects" class="w3-bar-item w3-button" onclick="checkAvail('projects')">Projects</a>
-    <!--<a href="#talks" class="w3-bar-item w3-button">Talks</a>
+	<!-- Sidebar/menu -->
+	<nav class="w3-sidebar w3-bar-block w3-black w3-collapse w3-top w3-right" style="z-index:3;width:150px"
+		id="mySidebar">
+		<div class="w3-container w3-display-container w3-padding-16">
+			<h3><b>QIWEN</b></h3>
+			<h6><b>Charley</b></h6>
+		</div>
+		<div class="w3-padding-64 w3-text-light-grey w3-large" style="font-weight:bold">
+			<a href="#home" class="w3-bar-item w3-button" onclick="checkAvail('home')">Home</a>
+			<a href="#news" class="w3-bar-item w3-button" onclick="checkAvail('news')">News</a>
+			<a href="#projects" class="w3-bar-item w3-button" onclick="checkAvail('projects')">Projects</a>
+			<!--<a href="#talks" class="w3-bar-item w3-button">Talks</a>
     <a href="#publications" class="w3-bar-item w3-button">Research</a>
     <a href="#service" class="w3-bar-item w3-button">Services</a>-->
-    <a href="#essay" class="w3-bar-item w3-button" onclick="checkAvail('essay')">Essays</a>
-    <a href="#award" class="w3-bar-item w3-button" onclick="checkAvail('award')">Awards</a>
-    <a href="#grade" class="w3-bar-item w3-button" onclick="checkAvail('grade')">Grades</a>
-    <a href="#album" id="startAlbum" class="w3-bar-item w3-button" onclick="checkAvail('album')">Album</a>
-  </div>
-</nav>
+			<a href="#publication" class="w3-bar-item w3-button" onclick="checkAvail('publication')">Publications</a>
+			<a href="#award" class="w3-bar-item w3-button" onclick="checkAvail('award')">Awards</a>
+			<a href="#grade" class="w3-bar-item w3-button" onclick="checkAvail('grade')">Grades</a>
+			<a href="#album" id="startAlbum" class="w3-bar-item w3-button" onclick="checkAvail('album')">Album</a>
+		</div>
+	</nav>
 
-<!-- Top menu on small screens -->
-<header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
-  <div class="w3-bar-item w3-padding-24">QIWEN</div>
-  <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right"  style="font-stretch: extra-expanded;" onclick="w3_open()"><b>≡</b></a>
-  </div>
-</header>
+	<!-- Top menu on small screens -->
+	<header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
+		<div class="w3-bar-item w3-padding-24">QIWEN</div>
+		<a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right"
+			style="font-stretch: extra-expanded;" onclick="w3_open()"><b>≡</b></a>
+		</div>
+	</header>
 
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+	<!-- Overlay effect when opening sidebar on small screens -->
+	<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu"
+		id="myOverlay"></div>
 
-<!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:150px">
+	<!-- !PAGE CONTENT! -->
+	<div class="w3-main" style="margin-left:150px">
 
-  <!-- Push down content on small screens -->
-  <div class="w3-hide-large" style="margin-top:83px"></div>
+		<!-- Push down content on small screens -->
+		<div class="w3-hide-large" style="margin-top:83px"></div>
 
-<!-- The Home Section -->
-    <div class="w3-container w3-center w3-padding-32" id="home">
-      <img style="width: 35%;max-width: 320px" alt="profile photo" src="images/copynew-modified.png">
-      <h1>Qiwen Xiao</h1>
-        <p class="w3-justify" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;max-width:600px">
-          I am presently an undergraduate student (sophomore) at the Department of Computer Science and Engineering of Southern University of Science and Technology. I am enthusiastic about deep learning, with a specific focus on recommendation system and AI-generated content. I have engaged in learning the practical implementation of diverse neural network models, ranging from CNN, RNN, to Transformer, adeptly utilizing the PyTorch framework and following the tutorials offered by <a href="http://d2l.ai/">Dive into Deep Learning</a>. I am also interested in language learning and can program in C/C++/Java/Python/HTML+JavaScript+CSS and speak Spanish and Russian as third and fourth languages respectively.
-        </p>
-        <p class="w3-center">
-          <a href="mailto:12211634@mail.sustech.edu.cn"> Email </a> &nbsp/&nbsp
-          <a href="https://www.zhihu.com/people/charleyxiao"> Zhihu </a> &nbsp/&nbsp
-          <a href="https://github.com/Charley-xiao"> GitHub </a>
-        </p>
-        </tbody></table>
-  </div>
+		<!-- The Home Section -->
+		<div class="w3-container w3-center w3-padding-32" id="home">
+			<img style="width: 35%;max-width: 320px" alt="profile photo" src="images/copynew-modified.png">
+			<h1>Qiwen Xiao</h1>
+			<p class="w3-justify"
+				style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;max-width:600px">
+				I am presently an undergraduate student (sophomore) at the Department of Computer Science and
+				Engineering of Southern University of Science and Technology. I am enthusiastic about deep learning,
+				with a specific focus on large language models (LLMs) and automated program repair (APR). I am also interested in language learning and can
+				program in C/C++/Java/Python/HTML+JavaScript+CSS and speak Spanish and Russian as third and fourth
+				languages respectively.
+			</p>
+			<p class="w3-center">
+				<a href="mailto:12211634@mail.sustech.edu.cn"> Email </a> &nbsp/&nbsp
+				<a href="https://www.zhihu.com/people/charleyxiao"> Zhihu </a> &nbsp/&nbsp
+				<a href="https://github.com/Charley-xiao"> GitHub </a>
+			</p>
+			</tbody>
+			</table>
+		</div>
 
-<!-- The News Section -->
-  <!--<div class="w3-container w3-light-grey w3-padding-32" id="news">
-   <h2>News</h2>
-      <p><li> 5/2023, Webpage established.</li></p>
-  </div>-->
+		<!-- The News Section -->
+		<div class="w3-container w3-light-grey w3-padding-32" id="news">
+			<h2>News</h2>
+			<p>
+				<li> 5/2023, Webpage established.</li>
+			</p>
+		</div>
 
-  <!-- The Projects Section -->
-  <!--<div class="w3-container w3-padding-32" id="projects">
-    <h2>Recent Projects</h2>
-    <p class="w3-justify">
-      There have not been any recent projects since 2022. Below are three early projects of mine.
-    </p>
-    <h4><li> 2021, Online Mini-Game: Life in Digua</li></h4>
-    <img style="width:96%;" src="images/blog-digua.png">
-    <p class="w3-justify">
-      <a style="color: #447ec9" href="https://life-in-digua.vercel.app/">Project Page</a> | <a style="color: #447ec9" href="https://github.com/Charley-xiao/life-in-digua">Github Page</a>
-    </p>
-    <p class="w3-justify">
-      This mini-game is a suspenseful detective-themed game, where players navigate different outcomes based on their decisions. I have developed this game as a tribute to the cherished friendship between my friends and I. Unfortunately, the final version has been lost after I abandoned my previous Github account. Also, do not open the game at midnight!
-    </p>
+		<!-- The Projects Section -->
+		<div class="w3-container w3-padding-32" id="projects">
+			<h2>Recent Projects</h2>
 
-    <h4><li> 2020, Utilizing Sonic-Pi for Programming Music</li></h4>
-    <img style="width:96%;" src="images/blog-sonic.png">
-    <p class="w3-justify">
-      <a style="color: #447ec9" href="https://space.bilibili.com/277561751/channel/seriesdetail?sid=1721171&ctype=0">Project Page (Bilibili)</a> | <a style="color: #447ec9" href="https://github.com/Charley-xiao/Sonic-Pi-Songs-Made-By-Charley-xiao">Github Page</a> | <a style="color: #447ec9" href="https://www.bilibili.com/video/BV14e411K7zt">Haunted (Excluded)</a>
-    </p>
-    <p class="w3-justify">
-      I used Sonic Pi to program songs and music. Sonic Pi is an innovative programming environment designed for creating music using code. It combines elements of music composition and live coding to empower musicians, educators, and enthusiasts to experiment and create their own unique sounds. Sonic Pi is open-source and free to use, making it accessible to a wide range of users.
-    </p>
+			<h4>
+				<li> 2024, Balance It: A Game for CFD</li>
+			</h4>
+			<img style="width:50%;left: 50%;transform: translateX(50%);" src="images/balanceit.png">
+			<p class="w3-justify w3-center">
+				<a style="color: #447ec9" href="https://github.com/Charley-xiao/balance-it">Project GitHub Page</a>
+			</p>
+			<p class="w3-justify">
+				This is the final project of the track "Computational Fluid Dynamics" in 0-1 Winter Camp 2024, Shenzhen. It is an interactive game that simulates the process of balancing a ball in wind using CFD. The game is implemented from scratch using Python.
+			</p>
 
-    <h4><li> 2020, Webpage for Learning Russian Vocabulary</li></h4>
-    <img style="width:96%;" src="images/blog-rus.png">
-    <p class="w3-justify">
-      <a style="color: #447ec9" href="https://charley-xiao.github.io/russian">Project Page</a> | <a style="color: #447ec9" href="https://github.com/Charley-xiao/Charley-xiao.github.io/blob/master/russian.html">Github Page</a>
-    </p>
-    <p class="w3-justify">
-      This webpage was constructed when I was learning Russian, aiming to enhance the efficiency of memorizing words.
-    </p>
-  </div>
--->
+			<h4>
+				<li> 2023, HTTP Server from Scratch</li>
+			</h4>
+			<img style="width:50%;left: 50%;transform: translateX(50%);" src="images/httpserver.png">
+			<p class="w3-justify w3-center">
+				<a style="color: #447ec9" href="https://github.com/Charley-xiao/HTTPServer">Project GitHub Page</a>
+			</p>
+			<p class="w3-justify">
+				This is the final project for CS305: Computer Networks 2023 Fall. I implemented a simple HTTP server from scratch using Python. The server can handle GET and POST requests, and can serve static files and dynamic pages.
+			</p>
 
-  <!-- The Essays Section -->
-  <div class="w3-container w3-light-grey w3-padding-32" id="essay">
-   <h2>Essays</h2>
-      <p><li> 6/2023, <a href="https://zhuanlan.zhihu.com/p/637407503">First Attempt at FastSpeech</a> (Chinese).</li></p>
-      <p><li> 5/2023, <a href="https://zhuanlan.zhihu.com/p/629476200">Encoding Position for Transformer with FLOATER</a> (Chinese).</li></p>
-      <p><li> 4/2023, <a href="https://zhuanlan.zhihu.com/p/619222801">Implementation from Scratch of Recommendation Algorithm Based on Matrix Factorization</a> (Chinese).</li></p>
-      <p><li> 3/2023, <a href="https://zhuanlan.zhihu.com/p/617645614">Weight Decay Explained</a> (Chinese).</li></p>
-      <p><li> 3/2023, <a href="https://charleyhut.github.io/2023/01/26/daddish/">Tutorials for Constructed Language Daddish</a> (English).</li></p>
-      <p><li> 3/2023, <a href="https://zhuanlan.zhihu.com/p/617507935">Cross Entropy Loss Used in Single-Labeled Softmax Categorization</a> (Chinese).</li></p>
-      <p><li> 3/2023, <a href="https://zhuanlan.zhihu.com/p/613679236">A Summary of SQL Injection</a> (Chinese).</li></p>
-      <p><li> 1/2023, <a href="https://zhuanlan.zhihu.com/p/601231308">A Summary of Verb Inflection in Hebrew</a> (Chinese).</li></p>
-  </div>
+			<h4>
+				<li> 2023, No Genshin MiniPiano</li>
+			</h4>
+			<img style="width:50%;left: 50%;transform: translateX(50%);" src="images/nogenshin.png">
+			<p class="w3-justify w3-center">
+				<a style="color: #447ec9" href="https://github.com/Charley-xiao/No-Genshin">Project GitHub Page</a>
+			</p>
+			<p class="w3-justify">
+				This is a group project for CS207: Digital Logic 2023 Fall, which implements a multifunctional mini
+				piano using Verilog on an FPGA board.
+			</p>
 
-  <!-- The Awards Section -->
-  <div class="w3-container w3-padding-32" id="award">
-    <h2>Awards</h2>
-    <p><li> 2023, <a style="color: silver;">Second Prize</a>, SUSTech Cup, the 2nd Quantitative Investment Simulated Trading Competition.</p>
-    <p><li> 2023, <a style="color: gold;"><b>Grand Prize</b></a>, NECCS (National English Competition for College Students, Final Round).</p>
-    <p><li> 2023, <a style="color: gold;"><b>Grand Prize</b></a>, Lianmeng Cup, the 10th Guangdong Province Undergraduate College English Writing Competition (Final Round).</p>
-    <p><li> 2022, <a style="color: gold;"><b>Grand Prize</b></a>, Yanxing Cup, Guangdong Provincial College English Applied Skills Competition (Final Round).</p>
-    <p><li> 2020, <a style="color: silver;">Second Prize</a>, NOIP (National Olympiad for Informatics in Provinces).</p>
-    <p><li> 2020, <a style="color: silver;">Second Prize</a>, CSP-S.</p>
-    <p><li> 2019, <a style="color: silver;">Second Prize</a>, CSP-S (Certified Software Professional - Senior).</p>
-  </div>  
+			<h4>
+				<li> 2023, Task Manager: I Need To</li>
+			</h4>
+			<img style="width:50%;left: 50%;transform: translateX(50%);" src="images/ineedto.png">
+			<p class="w3-justify w3-center">
+				<a style="color: #447ec9;" href="https://github.com/Charley-xiao/ineedto">Project GitHub Page</a>
+			</p>
+			<p class="w3-justify">
+				This is a a simple to-do list app based on Flask. Users can create, delete, and modify tasks. The server
+				can send email when a task is overdue.
+			</p>
+		</div>
 
-  <!-- The Grades Section -->
-  <!--<div class="w3-container w3-light-grey w3-padding-32" id="grade">
-    <h2>Grades</h2>
-    <h3>2023 Spring</h3>
-    <p><li> No data yet.</p>
-    <h3>2022 Fall</h3>
-    <p><li><div id="f22"> Privileged information, please click <a style="color: blue;" onclick="validatef22()">here</a> and input password to gain access.</div></p>
-    <h3>Others</h3>
-    <h4>IELTS</h4>
-    <p><li> 7/2022, Listening <b>9.0</b>, Reading <b>9.0</b>, Writing <b>7.0</b>, Speaking <b>6.0</b>, Overall <b>8.0</b></p>
-  </div>
+		<div class="w3-container w3-light-grey w3-padding-32" id="publication">
+			<h2>Publications</h2>
+			<p>
+				<li>None</li>
+			</p>
+		</div>
+
+		<!-- The Awards Section -->
+		<div class="w3-container w3-padding-32" id="award">
+			<h2>Awards</h2>
+			<p>
+				<li> 2024, <a style="color: silver;">Second Prize</a> (International), Asian Supercomputing Challenge (ASC) 2024.</p>
+			</p>
+			<p>
+				<li> 2023, <a style="color: silver;">Second Prize</a> (University), SUSTech Cup, the 2nd Quantitative Investment
+					Simulated Trading Competition.
+			</p>
+			<p>
+				<li> 2023, <a style="color: gold;"><b>Grand Prize</b></a> (National), NECCS (National English Competition for
+					College Students, Final Round).
+			</p>
+			<p>
+				<li> 2023, <a style="color: gold;"><b>Grand Prize</b></a> (Provincial), Lianmeng Cup, the 10th Guangdong Province
+					Undergraduate College English Writing Competition (Final Round).
+			</p>
+			<p>
+				<li> 2022, <a style="color: gold;"><b>Grand Prize</b></a> (Provincial), Yanxing Cup, Guangdong Provincial College
+					English Applied Skills Competition (Final Round).
+			</p>
+			<p>
+				<li> 2020, <a style="color: silver;">Second Prize</a> (Provincial), NOIP (National Olympiad for Informatics in
+					Provinces).
+			</p>
+			<p>
+				<li> 2020, <a style="color: silver;">Second Prize</a> (Provincial), CSP-S.
+			</p>
+			<p>
+				<li> 2019, <a style="color: silver;">Second Prize</a> (Provincial), CSP-S (Certified Software Professional - Senior).
+			</p>
+		</div>
+
+		<!-- The Grades Section -->
+		<div class="w3-container w3-light-grey w3-padding-32" id="grade">
+			<h2>Grades</h2>
+			<h4>GRE</h4>
+			<p><li> 2024, Verbal <b>155</b>, Quantitative <b>170</b></p>
+			<h4>IELTS</h4>
+			<p><li> 2022, Listening <b>9.0</b>, Reading <b>9.0</b>, Writing <b>7.0</b>, Speaking <b>6.0</b>, Overall <b>8.0</b></p>
+		</div>
 
   
-  <div class="w3-container w3-padding-32" id="album" style="height: 400px;">
+  <!--<div class="w3-container w3-padding-32" id="album" style="height: 400px;">
     <h2>Album</h2>
     <center>
       <div id="album">
@@ -262,61 +317,69 @@
     <div id="descrp">
       
     </div>
-  </div>
--->
-  
+  </div>-->
 
 
-  <div class=" w3-center w3-light-grey w3-padding-24">
-
-    Welcome to visit my <a href="https://charleyhut.github.io">main site</a>!
-
-  <!-- Statcounter -->
-  <div>You are visitor number
-<div id="sfcatqdqztmlctnkgubtnmjrxgf1mlygte9"></div><script type="text/javascript" src="https://counter10.optistats.ovh/private/counter.js?c=atqdqztmlctnkgubtnmjrxgf1mlygte9&down=async" async></script><noscript><a href="https://www.freecounterstat.com" title="free website counter"><img src="https://counter10.optistats.ovh/private/freecounterstat.php?c=atqdqztmlctnkgubtnmjrxgf1mlygte9" border="0" title="free website counter" alt="free website counter"></a></noscript> of this page.</div>
-  <!-- End of Statcounter Code -->
-
-  </div>
-
-  <!-- End page content -->
-</div>
-
-<script>
-// Accordion 
-function myAccFunc() {
-  var x = document.getElementById("demoAcc");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else {
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-
-// Click on the "Jeans" link on page load to open the accordion for demo purposes
-//document.getElementById("myBtn").click();
 
 
-// Open and close sidebar
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-  document.getElementById("myOverlay").style.display = "block";
-}
- 
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-  document.getElementById("myOverlay").style.display = "none";
-}
+		<div class=" w3-center w3-padding-24">
 
-//album control
+			Welcome to visit my <a href="https://charleyhut.github.io">main site</a>!
 
-function albumControl(){
-  if(getQueryString('a')=="-1"){
-    console.log('Successfully disabled Album!');
-    document.getElementById('album').style.display='none';
-    document.getElementById('startAlbum').style.display='none';
-  }
-}
-</script>
+			<!-- Statcounter -->
+			<div>You are visitor number
+				<div id="sfcatqdqztmlctnkgubtnmjrxgf1mlygte9"></div>
+				<script type="text/javascript"
+					src="https://counter10.optistats.ovh/private/counter.js?c=atqdqztmlctnkgubtnmjrxgf1mlygte9&down=async"
+					async></script><noscript><a href="https://www.freecounterstat.com" title="free website counter"><img
+							src="https://counter10.optistats.ovh/private/freecounterstat.php?c=atqdqztmlctnkgubtnmjrxgf1mlygte9"
+							border="0" title="free website counter" alt="free website counter"></a></noscript> of this
+				page.
+			</div>
+			<!-- End of Statcounter Code -->
+
+		</div>
+
+		<!-- End page content -->
+	</div>
+
+	<script>
+		// Accordion 
+		function myAccFunc() {
+			var x = document.getElementById("demoAcc");
+			if (x.className.indexOf("w3-show") == -1) {
+				x.className += " w3-show";
+			} else {
+				x.className = x.className.replace(" w3-show", "");
+			}
+		}
+
+		// Click on the "Jeans" link on page load to open the accordion for demo purposes
+		//document.getElementById("myBtn").click();
+
+
+		// Open and close sidebar
+		function w3_open() {
+			document.getElementById("mySidebar").style.display = "block";
+			document.getElementById("myOverlay").style.display = "block";
+		}
+
+		function w3_close() {
+			document.getElementById("mySidebar").style.display = "none";
+			document.getElementById("myOverlay").style.display = "none";
+		}
+
+		//album control
+
+		function albumControl() {
+			if (getQueryString('a') == "-1") {
+				console.log('Successfully disabled Album!');
+				document.getElementById('album').style.display = 'none';
+				document.getElementById('startAlbum').style.display = 'none';
+			}
+		}
+	</script>
 
 </body>
+
 </html>
