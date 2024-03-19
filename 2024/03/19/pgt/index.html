@@ -11,12 +11,12 @@
   
   
   
-  <meta name="description" content="Policy Gradient TheoremOptimize: $$J(\theta)\doteq v_{\pi_\theta}(s_0)$$ with discount factor $\gamma&#x3D;1$. To get the gradient:$$\begin{aligned}\nabla J(\theta)&amp;&#x3D;\nabla\left[\sum_{a_0}\pi(a_0|s_0)q">
+  <meta name="description" content="Policy Gradient TheoremOptimize:  J(\theta)\doteq v_{\pi_\theta}(s_0)with discount factor $\gamma&#x3D;1$. To get the gradient:  \begin{aligned} \nabla J(\theta)&amp;&#x3D;\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s_">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Proving Policy Gradient Theorem">
 <meta property="og:url" content="http://charleyhut.github.io/2024/03/19/pgt/index.html">
 <meta property="og:site_name" content="Charley&#39;s Hut">
-<meta property="og:description" content="Policy Gradient TheoremOptimize: $$J(\theta)\doteq v_{\pi_\theta}(s_0)$$ with discount factor $\gamma&#x3D;1$. To get the gradient:$$\begin{aligned}\nabla J(\theta)&amp;&#x3D;\nabla\left[\sum_{a_0}\pi(a_0|s_0)q">
+<meta property="og:description" content="Policy Gradient TheoremOptimize:  J(\theta)\doteq v_{\pi_\theta}(s_0)with discount factor $\gamma&#x3D;1$. To get the gradient:  \begin{aligned} \nabla J(\theta)&amp;&#x3D;\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s_">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-03-19T11:58:32.793Z">
 <meta property="article:modified_time" content="2024-03-19T12:33:58.301Z">
@@ -207,19 +207,43 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Policy-Gradient-Theorem"><a href="#Policy-Gradient-Theorem" class="headerlink" title="Policy Gradient Theorem"></a>Policy Gradient Theorem</h1><p>Optimize:</p>
-<p>$$<br>J(\theta)\doteq v_{\pi_\theta}(s_0)<br>$$</p>
-<p>with discount factor $\gamma=1$.</p>
-<p>To get the gradient:<br>$$<br>\begin{aligned}<br>\nabla J(\theta)&amp;=\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\right]\<br>&amp;=\sum_{a_0}\left[\nabla\pi(a_0|s_0)q_\pi(s_0,a_0)+\pi(a_0|s_0)\nabla q_\pi(s_0,a_0)\right]\<br>&amp;=\sum_{a_0}\nabla\pi(a_0|s_0)q_\pi(s_0,a_0)+\sum_{a_0}\pi(a_0|s_0)\nabla q_\pi(s_0,a_0)<br>\end{aligned}<br>$$</p>
-<p>For $\nabla q_\pi(s_0,a_0)$:</p>
-<p>$$<br>\begin{aligned}<br>\nabla q_\pi(s_0,a_0)&amp;=\nabla\sum_{s_1}p(s_1,r_1|s_0,a_0)(r_1+v(s_1))\<br>&amp;=\sum_{s_1}p(s_1|s_0,a_0)\nabla v(s_1)<br>\end{aligned}<br>$$</p>
-<p>For $\nabla v(s_1)$:</p>
-<p>$$<br>\begin{aligned}<br>\nabla v(s_1)&amp;=\sum_{a_1}\nabla\pi(a_1|s_1)q_\pi(s_1,a_1)+\sum_{a_1}\pi(a_1|s_1)\sum_{s_2}p(s_2|s_1,a_1)\nabla v(s_2)<br>\end{aligned}<br>$$</p>
-<p>Let $\Pr(s_0\to x,t,\pi)$ be the probability of reaching $x$ after $t$ steps from $s_0$ under the policy $\pi$.</p>
+<script type="math/tex; mode=display">
+J(\theta)\doteq v_{\pi_\theta}(s_0)</script><p>with discount factor $\gamma=1$.</p>
+<p>To get the gradient:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\nabla J(\theta)&=\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\right]\\
+&=\sum_{a_0}\left[\nabla\pi(a_0|s_0)q_\pi(s_0,a_0)+\pi(a_0|s_0)\nabla q_\pi(s_0,a_0)\right]\\
+&=\sum_{a_0}\nabla\pi(a_0|s_0)q_\pi(s_0,a_0)+\sum_{a_0}\pi(a_0|s_0)\nabla q_\pi(s_0,a_0)
+\end{aligned}</script><p>For $\nabla q_\pi(s_0,a_0)$:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\nabla q_\pi(s_0,a_0)&=\nabla\sum_{s_1}p(s_1,r_1|s_0,a_0)(r_1+v(s_1))\\
+&=\sum_{s_1}p(s_1|s_0,a_0)\nabla v(s_1)
+\end{aligned}</script><p>For $\nabla v(s_1)$:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\nabla v(s_1)&=\sum_{a_1}\nabla\pi(a_1|s_1)q_\pi(s_1,a_1)+\sum_{a_1}\pi(a_1|s_1)\sum_{s_2}p(s_2|s_1,a_1)\nabla v(s_2)
+\end{aligned}</script><p>Let $\Pr(s_0\to x,t,\pi)$ be the probability of reaching $x$ after $t$ steps from $s_0$ under the policy $\pi$.</p>
 <p>Hence,</p>
-<p>$$<br>\begin{aligned}<br>\nabla J(\theta)&amp;=\sum_{a_0}\nabla\pi(a_0|s_0)q_\pi(s_0,a_0)+\sum_{a_0}\pi(a_0|s_0)\cdot\sum_{s_1}p(s_1|s_0,a_0)\left[\sum_{a_1}\nabla\pi(a_1|s_1)q_\pi(s_1,a_1)+…\right]\<br>&amp;=\sum_{s_0}\Pr(s_0\to s_0,0,\pi)\sum_{a_0}\nabla\pi(a_0|s_0)q_\pi(s_0,a_0)\<br>&amp;+\sum_{s_1}\Pr(s_0\to s_1,1,\pi)\sum_{a_1}\nabla\pi(a_1|s_1)q_\pi(s_1,a_1)+…\<br>&amp;=\sum_{s_0}\Pr(s_0\to s_0,0,\pi)\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\dfrac{\nabla\pi(a_0|s_0)}{\pi(a_0|s_0)}\<br>&amp;+\sum_{s_1}\Pr(s_0\to s_1,1,\pi)\sum_{a_1}\pi(a_1|s_1)q_\pi(s_1,a_1)\dfrac{\nabla\pi(a_1|s_1)}{\pi(a_1|s_1)}+…\<br>&amp;=\sum_{s_0}\Pr(s_0\to s_0,0,\pi)\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\nabla\ln\pi(a_0|s_0)\<br>&amp;+\sum_{s_1}\Pr(s_0\to s_1,1,\pi)\sum_{a_1}\pi(a_1|s_1)q_\pi(s_1,a_1)\nabla\ln\pi(a_1|s_1)+…\<br>&amp;=\sum_{t=0}^\infty\sum_{s_t}\Pr(s_0\to s_t,t,\pi)\sum_{a_t}\pi(a_t|s_t)q_\pi(s_t,a_t)\nabla\ln\pi(a_t|s_t)<br>\end{aligned}<br>$$</p>
-<p>Now we have the base form of Policy Gradient Theorem, and we can derive other forms.</p>
-<p>$$<br>\begin{aligned}<br>\nabla J(\theta)&amp;=\sum_{t=0}^\infty\sum_{s_t}\Pr(s_0\to s_t,t,\pi)\sum_{a_t}\pi(a_t|s_t)q_\pi(s_t,a_t)\nabla\ln\pi(a_t|s_t)\<br>&amp;=\sum_{x\in\mathcal S}\sum_{t=0}^\infty\Pr(s_0\to x,t,\pi)\sum_a\pi(a|x)q_\pi(x,a)\nabla\ln\pi(a|x)\<br>&amp;=\sum_{x\in\mathcal S}\sum_a\pi(a|x)q_\pi(x,a)\nabla\ln\pi(a|x)\<br>&amp;=\mathop{\mathbb{E}}\limits_{a\sim\pi(a|s)}\left[q_\pi(s,a)\nabla\ln\pi(a|s)\right]<br>\end{aligned}<br>$$</p>
-
+<script type="math/tex; mode=display">
+\begin{aligned}
+\nabla J(\theta)&=\sum_{a_0}\nabla\pi(a_0|s_0)q_\pi(s_0,a_0)+\sum_{a_0}\pi(a_0|s_0)\cdot\sum_{s_1}p(s_1|s_0,a_0)\left[\sum_{a_1}\nabla\pi(a_1|s_1)q_\pi(s_1,a_1)+...\right]\\
+&=\sum_{s_0}\Pr(s_0\to s_0,0,\pi)\sum_{a_0}\nabla\pi(a_0|s_0)q_\pi(s_0,a_0)\\
+&+\sum_{s_1}\Pr(s_0\to s_1,1,\pi)\sum_{a_1}\nabla\pi(a_1|s_1)q_\pi(s_1,a_1)+...\\
+&=\sum_{s_0}\Pr(s_0\to s_0,0,\pi)\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\dfrac{\nabla\pi(a_0|s_0)}{\pi(a_0|s_0)}\\
+&+\sum_{s_1}\Pr(s_0\to s_1,1,\pi)\sum_{a_1}\pi(a_1|s_1)q_\pi(s_1,a_1)\dfrac{\nabla\pi(a_1|s_1)}{\pi(a_1|s_1)}+...\\
+&=\sum_{s_0}\Pr(s_0\to s_0,0,\pi)\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\nabla\ln\pi(a_0|s_0)\\
+&+\sum_{s_1}\Pr(s_0\to s_1,1,\pi)\sum_{a_1}\pi(a_1|s_1)q_\pi(s_1,a_1)\nabla\ln\pi(a_1|s_1)+...\\
+&=\sum_{t=0}^\infty\sum_{s_t}\Pr(s_0\to s_t,t,\pi)\sum_{a_t}\pi(a_t|s_t)q_\pi(s_t,a_t)\nabla\ln\pi(a_t|s_t)
+\end{aligned}</script><p>Now we have the base form of Policy Gradient Theorem, and we can derive other forms.</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\nabla J(\theta)&=\sum_{t=0}^\infty\sum_{s_t}\Pr(s_0\to s_t,t,\pi)\sum_{a_t}\pi(a_t|s_t)q_\pi(s_t,a_t)\nabla\ln\pi(a_t|s_t)\\
+&=\sum_{x\in\mathcal S}\sum_{t=0}^\infty\Pr(s_0\to x,t,\pi)\sum_a\pi(a|x)q_\pi(x,a)\nabla\ln\pi(a|x)\\
+&=\sum_{x\in\mathcal S}\sum_a\pi(a|x)q_\pi(x,a)\nabla\ln\pi(a|x)\\
+&=\mathop{\mathbb{E}}\limits_{a\sim\pi(a|s)}\left[q_\pi(s,a)\nabla\ln\pi(a|s)\right]
+\end{aligned}</script>
       
     </div>
     <footer class="article-footer">
