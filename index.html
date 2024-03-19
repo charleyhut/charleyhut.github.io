@@ -206,14 +206,12 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p class="article-excerpt-content">
-          Policy Gradient TheoremOptimize:
+          Optimize:
+$$J(\theta)\doteq v_{\pi_\theta}(s_0)$$
+with discount factor $\gamma=1$.
 
-J(\theta)\doteq v_{\pi_\theta}(s_0)with discount factor $\gamma=1$.
-To get the gradient:
 
-\begin{aligned}
-\nabla J(\theta)&=\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\right]\\
-&=\sum_{a_0}\left[\nabla\pi(a_0...
+To get the gradient:$$\begin{aligned}\nabla J(\theta)&amp;=\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\right]\&amp;=\sum_{a_0}\left[\nabla\pi(a_0|s_0)q_\pi(s...
         </p>
         <p class="article-more-link">
           <a href="/2024/03/19/pgt/#more">Read More</a>
