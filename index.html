@@ -214,8 +214,10 @@ I. DPG (Deterministic Policy Gradient)易混淆符号规定：
 
 
 
+
 符号及定义
 含义
+
 
 
 
@@ -223,8 +225,9 @@ $r^\gamma_t=\sum\limits_{k=t}^\infty\gamma^{k-t}r(s_k,a_k)$
 discounted reward from time-step $t$
 
 
-$J(\pi)=\mathbb{E}[r_1^\gamma|\pi]$
-performance...
+$J(\pi)=\mathbb{E}[r_1^\gamma\
+\pi]$
+performa...
         </p>
         <p class="article-more-link">
           <a href="/2024/04/21/dpg_ddpg/#more">Read More</a>
@@ -275,10 +278,13 @@ performance...
       
         <p class="article-excerpt-content">
           Policy Gradient TheoremOptimize:
-$$J(\theta)\doteq v_{\pi_\theta}(s_0)$$
-with discount factor $\gamma=1$.
+
+J(\theta)\doteq v_{\pi_\theta}(s_0)with discount factor $\gamma=1$.
 To get the gradient:
-$$\begin{aligned}\nabla J(\theta)&amp;=\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\right]\&amp;=\sum_{a_0}\left[\na...
+
+\begin{aligned}
+\nabla J(\theta)&=\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\right]\\
+&=\sum_{a_0}\left[\nabla\pi(a_0...
         </p>
         <p class="article-more-link">
           <a href="/2024/03/19/pgt/#more">Read More</a>
