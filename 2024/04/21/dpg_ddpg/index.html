@@ -11,12 +11,12 @@
   
   
   
-  <meta name="description" content="肖淇文, Apr&#x2F;20&#x2F;2024  [!important] 本文仅为大纲 I. DPG (Deterministic Policy Gradient)易混淆符号规定：     符号及定义 含义     $r^\gamma_t&#x3D;\sum\limits_{k&#x3D;t}^\infty\gamma^{k-t}r(s_k,a_k)$ discounted reward from time-step $t$">
+  <meta name="description" content="肖淇文, Apr&#x2F;20&#x2F;2024  [!important] 本文仅为大纲 I. DPG (Deterministic Policy Gradient)易混淆符号规定：    符号及定义 含义    $r^\gamma_t&#x3D;\sum\limits_{k&#x3D;t}^\infty\gamma^{k-t}r(s_k,a_k)$ discounted reward from time-step $t$">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从DPG到DDPG">
 <meta property="og:url" content="http://charleyhut.github.io/2024/04/21/dpg_ddpg/index.html">
 <meta property="og:site_name" content="Charley&#39;s Hut">
-<meta property="og:description" content="肖淇文, Apr&#x2F;20&#x2F;2024  [!important] 本文仅为大纲 I. DPG (Deterministic Policy Gradient)易混淆符号规定：     符号及定义 含义     $r^\gamma_t&#x3D;\sum\limits_{k&#x3D;t}^\infty\gamma^{k-t}r(s_k,a_k)$ discounted reward from time-step $t$">
+<meta property="og:description" content="肖淇文, Apr&#x2F;20&#x2F;2024  [!important] 本文仅为大纲 I. DPG (Deterministic Policy Gradient)易混淆符号规定：    符号及定义 含义    $r^\gamma_t&#x3D;\sum\limits_{k&#x3D;t}^\infty\gamma^{k-t}r(s_k,a_k)$ discounted reward from time-step $t$">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-04-21T09:56:59.299Z">
 <meta property="article:modified_time" content="2024-04-21T10:01:45.732Z">
@@ -210,53 +210,43 @@
 </blockquote>
 <p>[!important] 本文仅为大纲</p>
 <h2 id="I-DPG-Deterministic-Policy-Gradient"><a href="#I-DPG-Deterministic-Policy-Gradient" class="headerlink" title="I. DPG (Deterministic Policy Gradient)"></a>I. DPG (Deterministic Policy Gradient)</h2><p>易混淆符号规定：</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
-<th style="text-align:center">符号及定义</th>
-<th style="text-align:center">含义</th>
+<th align="center">符号及定义</th>
+<th align="center">含义</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:center">$r^\gamma_t=\sum\limits_{k=t}^\infty\gamma^{k-t}r(s_k,a_k)$</td>
-<td style="text-align:center">discounted reward from time-step $t$</td>
+<tbody><tr>
+<td align="center">$r^\gamma_t=\sum\limits_{k=t}^\infty\gamma^{k-t}r(s_k,a_k)$</td>
+<td align="center">discounted reward from time-step $t$</td>
 </tr>
 <tr>
-<td style="text-align:center">$J(\pi)=\mathbb{E}[r_1^\gamma\</td>
-<td style="text-align:center">\pi]$</td>
-<td>performance objective</td>
+<td align="center">$J(\pi)=\mathbb{E}[r_1^\gamma|\pi]$</td>
+<td align="center">performance objective</td>
 </tr>
 <tr>
-<td style="text-align:center">$p(s\to s’,t,\pi)$</td>
-<td style="text-align:center">density at state $s’$ after $t$ steps from $s$</td>
+<td align="center">$p(s\to s’,t,\pi)$</td>
+<td align="center">density at state $s’$ after $t$ steps from $s$</td>
 </tr>
 <tr>
-<td style="text-align:center">$\rho^\pi(s’)=\int_{\mathcal S}\sum\limits\limits_{t=1}^\infty\gamma^{t-1}p_1(s)p(s\to s’,t,\pi){\rm d} s$</td>
-<td style="text-align:center">discounted state distribution</td>
+<td align="center">$\rho^\pi(s’)=\int_{\mathcal S}\sum\limits\limits_{t=1}^\infty\gamma^{t-1}p_1(s)p(s\to s’,t,\pi){\rm d} s$</td>
+<td align="center">discounted state distribution</td>
 </tr>
 <tr>
-<td style="text-align:center">$V^\pi(s)=\mathbb{E}[r_1^\gamma\</td>
-<td style="text-align:center">S_1=s;\pi]$</td>
-<td>state value</td>
+<td align="center">$V^\pi(s)=\mathbb{E}[r_1^\gamma|S_1=s;\pi]$</td>
+<td align="center">state value</td>
 </tr>
 <tr>
-<td style="text-align:center">$Q^\pi(s,a)=\mathbb{E}[r_1^\gamma\</td>
-<td style="text-align:center">S_1=s,A_1=a;\pi]$</td>
-<td>action value</td>
+<td align="center">$Q^\pi(s,a)=\mathbb{E}[r_1^\gamma|S_1=s,A_1=a;\pi]$</td>
+<td align="center">action value</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>因此有：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-J(\pi_\theta)&=\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}\pi_\theta(s,a)r(s,a){\rm d}a{\rm d}s\\ 
-&=\mathbb{E}_{s\sim\rho^\pi,a\sim\pi_\theta}[r(s,a)]
-\end{aligned}</script><h3 id="I-A-Stochastic-Policy-Gradient-Theorem"><a href="#I-A-Stochastic-Policy-Gradient-Theorem" class="headerlink" title="I.A. Stochastic Policy Gradient Theorem"></a>I.A. Stochastic Policy Gradient Theorem</h3><p>使用梯度上升最大化 $J(\pi_\theta)$ 需要求解梯度，根据随机策略梯度定理：</p>
-<script type="math/tex; mode=display">
-\nabla_\theta J(\pi_\theta)=\mathbb{E}_{s\sim\rho^\pi,a\sim\pi_\theta}[\nabla_\theta\pi_\theta(a|s)Q^\pi(s,a)]\tag{1}</script><h3 id="I-B-Stochastic-Actor-Critic"><a href="#I-B-Stochastic-Actor-Critic" class="headerlink" title="I.B. Stochastic Actor-Critic"></a>I.B. Stochastic Actor-Critic</h3><p>Actor: 由 $(1)$ 式梯度上升更新 $\theta$.</p>
+<p>$$<br>\begin{aligned}<br>J(\pi_\theta)&amp;=\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}\pi_\theta(s,a)r(s,a){\rm d}a{\rm d}s\<br>&amp;=\mathbb{E}_{s\sim\rho^\pi,a\sim\pi_\theta}[r(s,a)]<br>\end{aligned}<br>$$</p>
+<h3 id="I-A-Stochastic-Policy-Gradient-Theorem"><a href="#I-A-Stochastic-Policy-Gradient-Theorem" class="headerlink" title="I.A. Stochastic Policy Gradient Theorem"></a>I.A. Stochastic Policy Gradient Theorem</h3><p>使用梯度上升最大化 $J(\pi_\theta)$ 需要求解梯度，根据随机策略梯度定理：</p>
+<p>$$<br>\nabla_\theta J(\pi_\theta)=\mathbb{E}_{s\sim\rho^\pi,a\sim\pi_\theta}[\nabla_\theta\pi_\theta(a|s)Q^\pi(s,a)]\tag{1}<br>$$</p>
+<h3 id="I-B-Stochastic-Actor-Critic"><a href="#I-B-Stochastic-Actor-Critic" class="headerlink" title="I.B. Stochastic Actor-Critic"></a>I.B. Stochastic Actor-Critic</h3><p>Actor: 由 $(1)$ 式梯度上升更新 $\theta$.</p>
 <p>Critic: 参数 $w$ 通过temporal-difference learning近似 $Q^w(s,a)\approx Q^\pi(s,a)$​.</p>
 <p>会产生bias，除非满足：</p>
 <ol>
@@ -265,81 +255,61 @@ J(\pi_\theta)&=\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}\pi_\theta(s,a)r(s,a
 </ol>
 <p><strong>对1.的证明(Sutton, 1999)：</strong></p>
 <p>如果达到局部最优，则有</p>
-<script type="math/tex; mode=display">
-\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}\pi_\theta(s,a)\left[Q^\pi(s,a)-Q^w(s,a)\right]\nabla_wQ^w(s,a){\rm d}a{\rm d}s=0</script><p>此时如果满足</p>
-<script type="math/tex; mode=display">
-Q^w(s,a)=\nabla_\theta\log\pi_\theta(a|s)^\top w</script><p>则有</p>
-<script type="math/tex; mode=display">
-\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}\pi_\theta(s,a)\left[Q^\pi(s,a)-Q^w(s,a)\right]\nabla_\theta\log\pi_\theta(a|s){\rm d}a{\rm d}s=0</script><p>可知估计误差 $\left[Q^\pi(s,a)-Q^w(s,a)\right]$ 与策略梯度 $\nabla_\theta\pi_\theta(a|s)$ 正交。</p>
+<p>$$<br>\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}\pi_\theta(s,a)\left[Q^\pi(s,a)-Q^w(s,a)\right]\nabla_wQ^w(s,a){\rm d}a{\rm d}s=0<br>$$</p>
+<p>此时如果满足</p>
+<p>$$<br>Q^w(s,a)=\nabla_\theta\log\pi_\theta(a|s)^\top w<br>$$</p>
+<p>则有</p>
+<p>$$<br>\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}\pi_\theta(s,a)\left[Q^\pi(s,a)-Q^w(s,a)\right]\nabla_\theta\log\pi_\theta(a|s){\rm d}a{\rm d}s=0<br>$$</p>
+<p>可知估计误差 $\left[Q^\pi(s,a)-Q^w(s,a)\right]$ 与策略梯度 $\nabla_\theta\pi_\theta(a|s)$ 正交。</p>
 <p>由随机策略梯度定理：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\nabla_\theta J(\pi_\theta)&=\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}{\color{red}Q^\pi(s,a)}\nabla_\theta\pi_\theta(a|s){\rm d}a{\rm d}s\\ 
-&-\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}\pi_\theta(s,a)\left[{\color{red}Q^\pi(s,a)}-Q^w(s,a)\right]\nabla_\theta\log\pi_\theta(a|s){\rm d}a{\rm d}s\\ 
-&=\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}Q^w(s,a)\nabla_\theta\pi_\theta(a|s){\rm d}a{\rm d}s
-\end{aligned}</script><p>更直观地说，估计函数 $Q^w(s,a)$ 与策略梯度在features上呈线性关系。</p>
+<p>$$<br>\begin{aligned}<br>\nabla_\theta J(\pi_\theta)&amp;=\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}{\color{red}Q^\pi(s,a)}\nabla_\theta\pi_\theta(a|s){\rm d}a{\rm d}s\<br>&amp;-\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}\pi_\theta(s,a)\left[{\color{red}Q^\pi(s,a)}-Q^w(s,a)\right]\nabla_\theta\log\pi_\theta(a|s){\rm d}a{\rm d}s\<br>&amp;=\int_{\mathcal S}\rho^\pi(s)\int_{\mathcal A}Q^w(s,a)\nabla_\theta\pi_\theta(a|s){\rm d}a{\rm d}s<br>\end{aligned}<br>$$</p>
+<p>更直观地说，估计函数 $Q^w(s,a)$ 与策略梯度在features上呈线性关系。</p>
 <p>对于条件2，实际应用中可能不会去满足，而是使用temporal-difference learning来提高效率。</p>
 <h3 id="I-C-Off-Policy-Actor-Critic"><a href="#I-C-Off-Policy-Actor-Critic" class="headerlink" title="I.C. Off-Policy Actor-Critic"></a>I.C. Off-Policy Actor-Critic</h3><p>Off-policy: $\beta(a|s)\ne\pi_\theta(a|s)$.</p>
 <p>Performance objective一般被更改为目标策略 $\pi$ 在行为策略 $\beta$ 的状态分布上的平均价值：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-J_\beta(\pi_\theta)&=\int_{\mathcal S}\rho^\beta(s)V^\pi(s){\rm d}s\\ 
-&=\int_{\mathcal S}\int_{\mathcal A}\rho^\beta(s)\pi_\theta(a|s)Q^\pi(s,a){\rm d}a{\rm d}s
-\end{aligned}</script><p>再求梯度：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\nabla_\theta J_\beta(\pi_\theta)&\approx\int_{\mathcal S}\int_{\mathcal A}\rho^\beta(s)\nabla_\theta\pi_\theta(a|s)Q^\pi(s,a){\rm d}a{\rm d}s\\ 
-&=\mathbb{E}_{s\sim\rho^\beta}\left[\int_{\mathcal A}\beta_\theta(a|s)\dfrac{\pi_\theta(a|s)}{\beta_\theta(a|s)}\nabla_\theta\log\pi_\theta(a|s)Q^\pi(s,a){\rm d}a\right]\\ 
-&=\mathbb{E}_{s\sim\rho^\beta,a\sim\beta}\left[\dfrac{\pi_\theta(a|s)}{\beta_\theta(a|s)}\nabla_\theta\log\pi_\theta(a|s)Q^\pi(s,a)\right]
-\end{aligned}</script><p>丢掉了 $\nabla_\theta Q^\pi(s,a)$（因为难以估计），但是可以保留local optima.</p>
+<p>$$<br>\begin{aligned}<br>J_\beta(\pi_\theta)&amp;=\int_{\mathcal S}\rho^\beta(s)V^\pi(s){\rm d}s\<br>&amp;=\int_{\mathcal S}\int_{\mathcal A}\rho^\beta(s)\pi_\theta(a|s)Q^\pi(s,a){\rm d}a{\rm d}s<br>\end{aligned}<br>$$</p>
+<p>再求梯度：</p>
+<p>$$<br>\begin{aligned}<br>\nabla_\theta J_\beta(\pi_\theta)&amp;\approx\int_{\mathcal S}\int_{\mathcal A}\rho^\beta(s)\nabla_\theta\pi_\theta(a|s)Q^\pi(s,a){\rm d}a{\rm d}s\<br>&amp;=\mathbb{E}<em>{s\sim\rho^\beta}\left[\int</em>{\mathcal A}\beta_\theta(a|s)\dfrac{\pi_\theta(a|s)}{\beta_\theta(a|s)}\nabla_\theta\log\pi_\theta(a|s)Q^\pi(s,a){\rm d}a\right]\<br>&amp;=\mathbb{E}_{s\sim\rho^\beta,a\sim\beta}\left[\dfrac{\pi_\theta(a|s)}{\beta_\theta(a|s)}\nabla_\theta\log\pi_\theta(a|s)Q^\pi(s,a)\right]<br>\end{aligned}<br>$$</p>
+<p>丢掉了 $\nabla_\theta Q^\pi(s,a)$（因为难以估计），但是可以保留local optima.</p>
 <p>为什么？证明如下（来自Degris et al., Off-Policy Actor-Critic, 2012）：</p>
-<p>定理：对于任何策略参数 $\theta$，令 </p>
-<script type="math/tex; mode=display">
-\theta'=\theta+\alpha\int_{\mathcal S}\int_{\mathcal A}\rho^\beta(s)\nabla_\theta\pi_\theta(a|s)Q^\pi(s,a){\rm d}a{\rm d}s</script><p>则存在 $\epsilon&gt;0$ 使得 $\forall\alpha&lt;\epsilon$，</p>
-<script type="math/tex; mode=display">
-J_\beta(\pi_{\theta'})\ge J_\beta(\pi_\theta)</script><p>具体证明过程略。由此可知这种梯度上升方式是可行的。</p>
+<p>定理：对于任何策略参数 $\theta$，令<br>$$<br>\theta’=\theta+\alpha\int_{\mathcal S}\int_{\mathcal A}\rho^\beta(s)\nabla_\theta\pi_\theta(a|s)Q^\pi(s,a){\rm d}a{\rm d}s<br>$$</p>
+<p>则存在 $\epsilon&gt;0$ 使得 $\forall\alpha&lt;\epsilon$，</p>
+<p>$$<br>J_\beta(\pi_{\theta’})\ge J_\beta(\pi_\theta)<br>$$</p>
+<p>具体证明过程略。由此可知这种梯度上升方式是可行的。</p>
 <p>在Off-Policy Actor-Critic架构中，Critic的目标进而改为估计 $V^v(s)\approx V^\pi(s)$​.</p>
 <p>由于 $Q^\pi(s,a)$ 未知，使用temporal-difference error $\delta_t=r_{t+1}+\gamma V^v(s_{t+1})-V^v(s_t)$，可证明是真实梯度的近似。</p>
 <p>Actor和Critic都使用importance sampling ratio $\dfrac{\pi_\theta(a|s)}{\beta_\theta(a|s)}$ 来调整使得actions是根据 $\pi$ 来选择而不是 $\beta$.</p>
 <h3 id="I-D-Gradients-of-Deterministic-Policies"><a href="#I-D-Gradients-of-Deterministic-Policies" class="headerlink" title="I.D. Gradients of Deterministic Policies"></a>I.D. Gradients of Deterministic Policies</h3><p>确定性策略用 $\mu$ 表示。</p>
 <p>如果直接令 $\mu^{k+1}(s)=\arg\max\limits_aQ^{\mu^k}(s,a)$，在连续动作空间里每一步都需要求最大值，不方便。</p>
 <p>替代方案是使策略以 $\nabla Q$ 的方向移动，即</p>
-<script type="math/tex; mode=display">
-\theta^{k+1}=\theta^k+\alpha\mathbb{E}_{s\sim\rho^{\mu^k}}\left[\nabla_\theta Q^{\mu^k}(s,\mu_\theta(s))\right]</script><p>可以看到对于策略的提升可被分解为action value对action的梯度以及策略对策略参数的梯度：</p>
-<script type="math/tex; mode=display">
-\theta^{k+1}=\theta^k+\alpha\mathbb{E}_{s\sim\rho^{\mu^k},a=\mu_\theta(s)}\left[\nabla_\theta\mu_\theta(s)\nabla_aQ^{\mu^k}(s,a)\right]</script><p>DPG定理证明上面的更新就是performance objective的梯度方向，即</p>
-<script type="math/tex; mode=display">
-\nabla_\theta J(\mu_\theta)=\mathbb{E}_{s\sim\rho^{\mu^k},a=\mu_\theta(s)}\left[\nabla_\theta\mu_\theta(s)\nabla_aQ^{\mu^k}(s,a)\right]</script><p>另外文章还证明了DP是SP的极限形式。</p>
+<p>$$<br>\theta^{k+1}=\theta^k+\alpha\mathbb{E}_{s\sim\rho^{\mu^k}}\left[\nabla_\theta Q^{\mu^k}(s,\mu_\theta(s))\right]<br>$$</p>
+<p>可以看到对于策略的提升可被分解为action value对action的梯度以及策略对策略参数的梯度：</p>
+<p>$$<br>\theta^{k+1}=\theta^k+\alpha\mathbb{E}_{s\sim\rho^{\mu^k},a=\mu_\theta(s)}\left[\nabla_\theta\mu_\theta(s)\nabla_aQ^{\mu^k}(s,a)\right]<br>$$</p>
+<p>DPG定理证明上面的更新就是performance objective的梯度方向，即</p>
+<p>$$<br>\nabla_\theta J(\mu_\theta)=\mathbb{E}_{s\sim\rho^{\mu^k},a=\mu_\theta(s)}\left[\nabla_\theta\mu_\theta(s)\nabla_aQ^{\mu^k}(s,a)\right]<br>$$</p>
+<p>另外文章还证明了DP是SP的极限形式。</p>
 <h4 id="I-D-1-On-Policy-Deterministic-Actor-Critic"><a href="#I-D-1-On-Policy-Deterministic-Actor-Critic" class="headerlink" title="I.D.1. On-Policy Deterministic Actor-Critic"></a>I.D.1. On-Policy Deterministic Actor-Critic</h4><p>虽然是deterministic，但是在噪声较大的情况下也能保证exploration.</p>
 <p>算法流程：</p>
-<script type="math/tex; mode=display">
-\delta_t=r_t+\gamma Q^w(s_{t+1},a_{t+1})-Q^w(s_t,a_t)\\
-w_{t+1}=w_t+\alpha_w\delta_t\nabla_wQ^w(s_t,a_t)\\
-\theta_{t+1}=\theta_t+\alpha_\theta\nabla_\theta\mu_\theta(s_t)\nabla_aQ^w(s_t,a_t)|_{a=\mu_\theta(s)}</script><h4 id="I-D-2-Off-Policy-Deterministic-Actor-Critic"><a href="#I-D-2-Off-Policy-Deterministic-Actor-Critic" class="headerlink" title="I.D.2. Off-Policy Deterministic Actor-Critic"></a>I.D.2. Off-Policy Deterministic Actor-Critic</h4><p>跟stochastic情况相似，有</p>
-<script type="math/tex; mode=display">
-\nabla_\theta J_\beta(\mu_\theta)\approx\mathbb{E}_{s\sim\rho^\beta,a=\mu_\theta(s)}\left[\nabla_\theta\mu_\theta(s)\nabla_aQ^\mu(s,a)\right]</script><p>算法流程：</p>
-<script type="math/tex; mode=display">
-\delta_t=r_t+\gamma Q^w(s_{t+1},\mu_\theta(s_{t+1}))-Q^w(s_t,a_t)\\
-w_{t+1}=w_t+\alpha_w\delta_t\nabla_wQ^w(s_t,a_t)\\
-\theta_{t+1}=\theta_t+\alpha_\theta\nabla_\theta\mu_\theta(s_t)\nabla_aQ^w(s_t,a_t)|_{a=\mu_\theta(s)}</script><h4 id="I-D-3-Compatible-Function-Approximation"><a href="#I-D-3-Compatible-Function-Approximation" class="headerlink" title="I.D.3. Compatible Function Approximation"></a>I.D.3. Compatible Function Approximation</h4><p>相似地，$Q^w(s,a)$ 的选择需要满足下列两个条件：</p>
+<p>$$<br>\delta_t=r_t+\gamma Q^w(s_{t+1},a_{t+1})-Q^w(s_t,a_t)\<br>w_{t+1}=w_t+\alpha_w\delta_t\nabla_wQ^w(s_t,a_t)\<br>\theta_{t+1}=\theta_t+\alpha_\theta\nabla_\theta\mu_\theta(s_t)\nabla_aQ^w(s_t,a_t)|_{a=\mu_\theta(s)}<br>$$</p>
+<h4 id="I-D-2-Off-Policy-Deterministic-Actor-Critic"><a href="#I-D-2-Off-Policy-Deterministic-Actor-Critic" class="headerlink" title="I.D.2. Off-Policy Deterministic Actor-Critic"></a>I.D.2. Off-Policy Deterministic Actor-Critic</h4><p>跟stochastic情况相似，有</p>
+<p>$$<br>\nabla_\theta J_\beta(\mu_\theta)\approx\mathbb{E}_{s\sim\rho^\beta,a=\mu_\theta(s)}\left[\nabla_\theta\mu_\theta(s)\nabla_aQ^\mu(s,a)\right]<br>$$</p>
+<p>算法流程：</p>
+<p>$$<br>\delta_t=r_t+\gamma Q^w(s_{t+1},\mu_\theta(s_{t+1}))-Q^w(s_t,a_t)\<br>w_{t+1}=w_t+\alpha_w\delta_t\nabla_wQ^w(s_t,a_t)\<br>\theta_{t+1}=\theta_t+\alpha_\theta\nabla_\theta\mu_\theta(s_t)\nabla_aQ^w(s_t,a_t)|_{a=\mu_\theta(s)}<br>$$</p>
+<h4 id="I-D-3-Compatible-Function-Approximation"><a href="#I-D-3-Compatible-Function-Approximation" class="headerlink" title="I.D.3. Compatible Function Approximation"></a>I.D.3. Compatible Function Approximation</h4><p>相似地，$Q^w(s,a)$ 的选择需要满足下列两个条件：</p>
 <ol>
 <li>$\nabla_aQ^w(s,a)|_{a=\mu_\theta(s)}=\nabla_\theta\mu_\theta(s)^\top w$;</li>
-<li>$w$ 最小化 $MSE(\theta,w)=\mathbb{E}[\epsilon(s;\theta,w)^\top\epsilon(s;\theta,w)]$，其中 $\epsilon(s;\theta,w)=\nabla_aQ^w(s,a)|_{a=\mu_\theta(s)}-\nabla_aQ^\mu(s,a)|_{a=\mu_\theta(s)}$.</li>
+<li>$w$ 最小化 $MSE(\theta,w)=\mathbb{E}[\epsilon(s;\theta,w)^\top\epsilon(s;\theta,w)]$，其中 $\epsilon(s;\theta,w)=\nabla_aQ^w(s,a)|<em>{a=\mu_\theta(s)}-\nabla_aQ^\mu(s,a)|</em>{a=\mu_\theta(s)}$.</li>
 </ol>
 <p>对条件1的证明类似于stochastic的情况。</p>
 <p>对条件2的证明：</p>
 <p>达到最小值时，梯度为0，即</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\nabla_wMSE(\theta,w)&=0\\ 
-\mathbb{E}\left[\nabla_\theta\mu_\theta(s)\nabla_aQ^w(s,a)|_{a=\mu_\theta(s)}\right]&=\mathbb{E}\left[\nabla_\theta\mu_\theta(s)\nabla_aQ^\mu(s,a)|_{a=\mu_\theta(s)}\right]\\ 
-&=\nabla_\theta J_{(\beta)}(\mu_\theta)
-\end{aligned}</script><p>对于任意确定性策略 $\mu_\theta(s)$，总存在approximator，形式为</p>
-<script type="math/tex; mode=display">
-Q^w(s,a)=(a-\mu_\theta(s))^\top\nabla_\theta\mu_\theta(s)^\top w+V^v(s)</script><p>其中，$V^v(s)$ 可以是任何可导且独立于 $a$ 的基准函数，比如 $V^v(s)=v^\top\phi(s)$，$\phi(s)$ 为state features.</p>
+<p>$$<br>\begin{aligned}<br>\nabla_wMSE(\theta,w)&amp;=0\<br>\mathbb{E}\left[\nabla_\theta\mu_\theta(s)\nabla_aQ^w(s,a)|<em>{a=\mu_\theta(s)}\right]&amp;=\mathbb{E}\left[\nabla_\theta\mu_\theta(s)\nabla_aQ^\mu(s,a)|</em>{a=\mu_\theta(s)}\right]\<br>&amp;=\nabla_\theta J_{(\beta)}(\mu_\theta)<br>\end{aligned}<br>$$</p>
+<p>对于任意确定性策略 $\mu_\theta(s)$，总存在approximator，形式为</p>
+<p>$$<br>Q^w(s,a)=(a-\mu_\theta(s))^\top\nabla_\theta\mu_\theta(s)^\top w+V^v(s)<br>$$</p>
+<p>其中，$V^v(s)$ 可以是任何可导且独立于 $a$ 的基准函数，比如 $V^v(s)=v^\top\phi(s)$，$\phi(s)$ 为state features.</p>
 <p>可以大致理解为</p>
-<script type="math/tex; mode=display">
-s\text{下}a\text{的动作价值}=\underbrace{\text{选}a\text{而不是}\mu_\theta(s)\text{的优势}}\limits_{A^w(s,a)=\phi(s,a)^\top w=(a-\mu_\theta(s))^\top\nabla_\theta\mu_\theta(s)^\top w}+s\text{的状态价值}</script><p>这里作者都选择用线性approximator：</p>
+<p>$$<br>s\text{下}a\text{的动作价值}=\underbrace{\text{选}a\text{而不是}\mu_\theta(s)\text{的优势}}\limits_{A^w(s,a)=\phi(s,a)^\top w=(a-\mu_\theta(s))^\top\nabla_\theta\mu_\theta(s)^\top w}+s\text{的状态价值}<br>$$</p>
+<p>这里作者都选择用线性approximator：</p>
 <blockquote>
 <p>We note that a linear function approximator is not very useful for predicting action-values globally, since the action value diverges to <em>±∞</em> for large actions. However, it can still be highly effective as a <em>local</em> critic.</p>
 </blockquote>
@@ -351,14 +321,14 @@ s\text{下}a\text{的动作价值}=\underbrace{\text{选}a\text{而不是}\mu_\t
 <h2 id="II-DQN"><a href="#II-DQN" class="headerlink" title="II. DQN"></a>II. DQN</h2><p>用神经网络（Q-network）拟合action-value.</p>
 <p>DQN最初提出时仍然是stochastic的情况。</p>
 <p>Q-network在每个iteration $i$ 的训练目标是最小化</p>
-<script type="math/tex; mode=display">
-L_i(\theta_i)=\mathbb{E}_{s,a\sim\rho(\cdot)}\left[\left(y_i-Q(s,a;\theta_i)\right)^2\right]</script><p>其中</p>
-<script type="math/tex; mode=display">
-y_i=\mathbb{E}_{s\sim\mathcal S}\left[r+\gamma\max\limits_{a'}Q(s',a';\theta_{i-1})|s,a\right]</script><p>即iteration $i$ 的target.</p>
+<p>$$<br>L_i(\theta_i)=\mathbb{E}_{s,a\sim\rho(\cdot)}\left[\left(y_i-Q(s,a;\theta_i)\right)^2\right]<br>$$</p>
+<p>其中</p>
+<p>$$<br>y_i=\mathbb{E}<em>{s\sim\mathcal S}\left[r+\gamma\max\limits</em>{a’}Q(s’,a’;\theta_{i-1})|s,a\right]<br>$$</p>
+<p>即iteration $i$ 的target.</p>
 <p>需要注意到一点是训练目标包含上一个迭代的参数。</p>
 <p>求导可得：</p>
-<script type="math/tex; mode=display">
-\nabla_{\theta_i}L_i(\theta_i)=\mathbb{E}_{s,a\sim\rho(\cdot);s'\in\mathcal S}\left[r+\gamma\max\limits_{a'}Q(s',a';\theta_{i-1})-Q(s,a;\theta_i)\nabla_{\theta_i}Q(s,a;\theta_i)\right]</script><p>实际应用中不会去计算这个期望，而是每个时间步都根据单样本来更新。</p>
+<p>$$<br>\nabla_{\theta_i}L_i(\theta_i)=\mathbb{E}<em>{s,a\sim\rho(\cdot);s’\in\mathcal S}\left[r+\gamma\max\limits</em>{a’}Q(s’,a’;\theta_{i-1})-Q(s,a;\theta_i)\nabla_{\theta_i}Q(s,a;\theta_i)\right]<br>$$</p>
+<p>实际应用中不会去计算这个期望，而是每个时间步都根据单样本来更新。</p>
 <p>DQN的创新点Experience Replay：可以避免strong correlation.</p>
 <blockquote>
 <p>By using experience replay the behavior distribution is averaged over many of its previous states, smoothing out learning and avoiding oscillations or divergence in the parameters.</p>
@@ -407,6 +377,15 @@ y_i=\mathbb{E}_{s\sim\mathcal S}\left[r+\gamma\max\limits_{a'}Q(s',a';\theta_{i-
   
     
 <nav id="article-nav">
+  
+    <a href="/2024/06/04/xiyi/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          在夜晚的香港做一只蜥蜴
+        
+      </div>
+    </a>
   
   
     <a href="/2024/03/19/pgt/" id="article-nav-older" class="article-nav-link-wrap">
