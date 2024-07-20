@@ -266,8 +266,10 @@ I. DPG (Deterministic Policy Gradient)易混淆符号规定：
 
 
 
+
 符号及定义
 含义
+
 
 
 
@@ -275,8 +277,9 @@ $r^\gamma_t=\sum\limits_{k=t}^\infty\gamma^{k-t}r(s_k,a_k)$
 discounted reward from time-step $t$
 
 
-$J(\pi)=\mathbb{E}[r_1^\gamma|\pi]$
-performance...
+$J(\pi)=\mathbb{E}[r_1^\gamma\
+\pi]$
+performa...
         </p>
         <p class="article-more-link">
           <a href="/2024/04/21/dpg_ddpg/#more">Read More</a>
@@ -327,10 +330,13 @@ performance...
       
         <p class="article-excerpt-content">
           Policy Gradient TheoremOptimize:
-$$J(\theta)\doteq v_{\pi_\theta}(s_0)$$
-with discount factor $\gamma=1$.
+
+J(\theta)\doteq v_{\pi_\theta}(s_0)with discount factor $\gamma=1$.
 To get the gradient:
-$$\begin{aligned}\nabla J(\theta)&amp;=\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\right]\&amp;=\sum_{a_0}\left[\na...
+
+\begin{aligned}
+\nabla J(\theta)&=\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s_0,a_0)\right]\\
+&=\sum_{a_0}\left[\nabla\pi(a_0...
         </p>
         <p class="article-more-link">
           <a href="/2024/03/19/pgt/#more">Read More</a>
@@ -464,7 +470,7 @@ $$\begin{aligned}\nabla J(\theta)&amp;=\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2023/01/26/daddish/">Daddish</a>
+      <a class="article-title" href="/2023/01/25/daddish/">Daddish</a>
     </h1>
   
 
@@ -472,8 +478,8 @@ $$\begin{aligned}\nabla J(\theta)&amp;=\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s
     
     <div class="article-meta">
       
-	<a href="/2023/01/26/daddish/" class="article-date">
-	  <time datetime="2023-01-26T06:41:08.310Z" itemprop="datePublished">2023-01-26</time>
+	<a href="/2023/01/25/daddish/" class="article-date">
+	  <time datetime="2023-01-26T06:41:08.310Z" itemprop="datePublished">2023-01-25</time>
 	</a>
 
       
@@ -488,7 +494,7 @@ $$\begin{aligned}\nabla J(\theta)&amp;=\nabla\left[\sum_{a_0}\pi(a_0|s_0)q_\pi(s
 WelcomeWelcome to the tutorial of Daddish, a constructed language created by me. From the following tutorial, you will acquire a basic knowledge of the grammar of Daddish and learn to sp...
         </p>
         <p class="article-more-link">
-          <a href="/2023/01/26/daddish/#more">Read More</a>
+          <a href="/2023/01/25/daddish/#more">Read More</a>
         </p>
       
     </div>
